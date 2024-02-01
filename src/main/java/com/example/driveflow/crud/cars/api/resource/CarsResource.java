@@ -4,9 +4,9 @@ import com.example.driveflow.crud.cars.model.CarsModel;
 import com.example.driveflow.crud.cars.service.CarsService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.context.request.async.DeferredResult;
 
 import java.util.List;
 
@@ -19,15 +19,28 @@ public class CarsResource {
 
     @GetMapping("/all")
     public List<CarsModel> findAllCars(){
-//    public DeferredResult<ResponseEntity<List<CarsModel>>> findAllCars(){
-//        final DeferredResult<ResponseEntity<List<CarsModel>>> dr = new DeferredResult<>();
-//        dr.setResult(ResponseEntity.ok().body(carsService.findAllCars()));
-//        return dr;
         return carsService.findAllCars();
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<CarsModel> findByIdCars(@PathVariable Integer id) {
+        CarsModel carsModel = carsService.findByIdCars(id);
+
+            if (carsModel != null) {
+                return new ResponseEntity<>(carsModel, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
     }
 
     @PostMapping("/save")
     public CarsModel saveCars(@RequestBody CarsModel carsModel){
         return carsService.saveCars(carsModel);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteCars(@PathVariable Integer id){
+        carsService.deleteCars(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

@@ -18,7 +18,15 @@ public class CarsService {
         return carsRepository.findAll();
     }
 
+    public CarsModel findByIdCars(Integer id) {
+        return carsRepository.findById(id).orElse(null);
+    }
+
     public CarsModel saveCars(CarsModel carsModel){
         return carsRepository.save(carsModel);
+    }
+
+    public void deleteCars(Integer id) {
+        carsRepository.deleteById(id);
     }
 }
