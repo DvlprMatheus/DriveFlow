@@ -18,8 +18,8 @@ public class CarsResource {
     private CarsService carsService;
 
     @GetMapping("/all")
-    public List<CarsModel> findAllCars(){
-        return carsService.findAllCars();
+    public ResponseEntity<List<CarsModel>> findAllCars(){
+       return new ResponseEntity<>(carsService.findAllCars(), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
@@ -34,13 +34,24 @@ public class CarsResource {
     }
 
     @PostMapping("/save")
-    public CarsModel saveCars(@RequestBody CarsModel carsModel){
-        return carsService.saveCars(carsModel);
+    public ResponseEntity<CarsModel> saveCars(@RequestBody CarsModel carsModel){
+        return new ResponseEntity<>(carsService.saveCars(carsModel), HttpStatus.CREATED);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<CarsModel> updateCars(@PathVariable Integer id, @RequestBody CarsModel newCar){
+        CarsModel updatedCar = carsService.updateCars(id, newCar);
+
+        if (updatedCar != null){
+            return new ResponseEntity<>(updatedCar, HttpStatus.CREATED);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteCars(@PathVariable Integer id){
         carsService.deleteCars(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

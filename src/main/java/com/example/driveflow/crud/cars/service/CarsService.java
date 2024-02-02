@@ -26,6 +26,21 @@ public class CarsService {
         return carsRepository.save(carsModel);
     }
 
+    public CarsModel updateCars(Integer id, CarsModel newCar) {
+        CarsModel existingCar = carsRepository.findById(id).orElse(null);
+
+        if (existingCar != null) {
+            existingCar.setModel(newCar.getModel());
+            existingCar.setManufacturer(newCar.getManufacturer());
+            existingCar.setYear(newCar.getYear());
+            existingCar.setColor(newCar.getColor());
+
+            return carsRepository.save(existingCar);
+        }
+
+        return null;
+    }
+
     public void deleteCars(Integer id) {
         carsRepository.deleteById(id);
     }
