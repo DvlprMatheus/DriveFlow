@@ -2,6 +2,7 @@ package com.example.driveflow.crud.cars.service;
 
 import com.example.driveflow.crud.cars.api.filters.CarsFilter;
 import com.example.driveflow.crud.cars.api.request.CreateCarsRequest;
+import com.example.driveflow.crud.cars.api.request.UpdateCarsRequest;
 import com.example.driveflow.crud.cars.api.response.CarsResponse;
 import com.example.driveflow.crud.cars.model.CarsModel;
 import com.example.driveflow.crud.cars.repository.CarsRepository;
@@ -42,7 +43,7 @@ public class CarsService {
         carsRepository.save(carsModel);
     }
 
-    public CarsModel updateCars(Integer id, CarsModel newCar) {
+    public UpdateCarsRequest updateCars(Integer id, UpdateCarsRequest newCar) {
         CarsModel existingCar = carsRepository.findById(id).orElse(null);
 
         if (existingCar != null) {
@@ -51,14 +52,22 @@ public class CarsService {
             existingCar.setYear(newCar.getYear());
             existingCar.setColor(newCar.getColor());
 
-            return carsRepository.save(existingCar);
+            carsRepository.save(existingCar);
+            return newCar;
         }
 
         return null;
     }
 
-    public void deleteCars(Integer id) {
-        carsRepository.deleteById(id);
+    public boolean deleteCars(Integer id) {
+        CarsModel existingCar = carsRepository.findById(id).orElse(null);
+
+        if (existingCar != null) {
+            carsRepository.deleteById(id);
+            return true;
+        }
+
+        return false;
     }
 
     public List<CarsResponse> getCarFiltered(CarsFilter carsFilter) {

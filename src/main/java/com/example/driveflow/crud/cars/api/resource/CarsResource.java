@@ -2,6 +2,7 @@ package com.example.driveflow.crud.cars.api.resource;
 
 import com.example.driveflow.crud.cars.api.filters.CarsFilter;
 import com.example.driveflow.crud.cars.api.request.CreateCarsRequest;
+import com.example.driveflow.crud.cars.api.request.UpdateCarsRequest;
 import com.example.driveflow.crud.cars.api.response.CarsResponse;
 import com.example.driveflow.crud.cars.model.CarsModel;
 import com.example.driveflow.crud.cars.service.CarsService;
@@ -25,40 +26,6 @@ public class CarsResource {
        return new ResponseEntity<>(carsService.findAllCars(), HttpStatus.OK);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<CarsModel> findByIdCars(@PathVariable Integer id) {
-        CarsModel carsModel = carsService.findByIdCars(id);
-
-            if (carsModel != null) {
-                return new ResponseEntity<>(carsModel, HttpStatus.OK);
-            } else {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-            }
-    }
-
-    @PostMapping("/save")
-    public ResponseEntity<String> saveCars(@RequestBody CreateCarsRequest createCarsRequest){
-        carsService.saveCars(createCarsRequest);
-        return new ResponseEntity<>("Carro registrado com sucesso!", HttpStatus.CREATED);
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<CarsModel> updateCars(@PathVariable Integer id, @RequestBody CarsModel newCar){
-        CarsModel updatedCar = carsService.updateCars(id, newCar);
-
-        if (updatedCar != null){
-            return new ResponseEntity<>(updatedCar, HttpStatus.CREATED);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteCars(@PathVariable Integer id){
-        carsService.deleteCars(id);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-
     @GetMapping
     public ResponseEntity<List<CarsResponse>> getCarFiltered(
             @RequestParam(required = false) String model,
@@ -70,5 +37,44 @@ public class CarsResource {
         List<CarsResponse> filteredCars = carsService.getCarFiltered(carsFilter);
 
         return ResponseEntity.ok().body(filteredCars);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<CarsModel> findByIdCars(@PathVariable Integer id) {
+        CarsModel carsModel = carsService.findByIdCars(id);
+
+            if (carsModel != null) {
+                return new ResponseEntity<>(carsModel, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+    }
+
+    @PostMapping("/create")
+    public ResponseEntity<String> saveCars(@RequestBody CreateCarsRequest createCarsRequest){
+        carsService.saveCars(createCarsRequest);
+        return new ResponseEntity<>("Carro registrado com sucesso!", HttpStatus.CREATED);
+    }
+
+    @PutMapping("/update/{id}")
+    public ResponseEntity<String> updateCars(@PathVariable Integer id, @RequestBody UpdateCarsRequest newCar){
+        UpdateCarsRequest updatedCar = carsService.updateCars(id, newCar);
+
+        if (updatedCar != null){
+            return new ResponseEntity<>("Carro atualizado com sucesso!", HttpStatus.CREATED);
+        } else {
+            return new ResponseEntity<>("Carro não encontrado!", HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<String> deleteCars(@PathVariable Integer id){
+        boolean verify = carsService.deleteCars(id);
+
+        if (verify){
+            return new ResponseEntity<>("Carro deletado com sucesso!", HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("Carro não encontrado!", HttpStatus.NOT_FOUND);
+        }
     }
 }
