@@ -1,0 +1,9 @@
+.form-buttons {
+    display: flex;
+    justify-content: end;
+    width: 97%;
+}
+
+.form-buttons button{
+    margin: 5px;
+}

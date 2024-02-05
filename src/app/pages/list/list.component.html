@@ -1,0 +1,86 @@
+<mat-card>
+    <mat-card-header>
+        <div class="list-header">
+            <div class="list-text">
+                <mat-card-title>Carros</mat-card-title>
+                <mat-card-subtitle>Nesta área é possivel listar os carros registrados, criar e editar.</mat-card-subtitle>
+            </div>
+
+            <button mat-raised-button color="accent" routerLink="/create">Adicionar</button>
+        </div>
+    </mat-card-header>
+
+    <mat-card-actions>
+        <form class="list-form">
+          
+              <mat-form-field class="list-input" color="accent">
+                <mat-label>Modelo</mat-label>
+                <input matInput placeholder="Ex. Corsa">
+              </mat-form-field>
+
+              <mat-form-field class="list-input" color="accent">
+                <mat-label>Ano</mat-label>
+                <input matInput placeholder="Ex. 2015" color="accent">
+              </mat-form-field>
+
+              <mat-form-field class="list-input" color="accent">
+                <mat-label>Cor</mat-label>
+                <input matInput placeholder="Ex. Prata">
+              </mat-form-field>
+
+              <mat-form-field class="list-select" color="accent">
+                <mat-label>Fabricante</mat-label>
+                <mat-select>
+                  <mat-option>--</mat-option>
+                  @for (manufacturer of manufacturers; track manufacturer) {
+                    <mat-option [value]="manufacturer.name">{{ manufacturer.name }}</mat-option>
+                  }
+                </mat-select>
+              </mat-form-field>
+
+          </form>
+    </mat-card-actions>
+    
+    <div class="form-buttons">
+        <button mat-raised-button color="accent">Limpar</button>
+        <button mat-raised-button color="accent">Buscar</button>
+    </div>
+
+    <mat-card-content>
+
+        <div class="mat-elevation-z8">
+            <table mat-table [dataSource]="cars" class="mat-elevation-z8">
+          
+                <ng-container matColumnDef="id">
+                    <th mat-header-cell *matHeaderCellDef> Id </th>
+                    <td mat-cell *matCellDef="let car"> {{ car.id }} </td>
+                </ng-container>
+          
+                <ng-container matColumnDef="model">
+                    <th mat-header-cell *matHeaderCellDef> Modelo </th>
+                    <td mat-cell *matCellDef="let car"> {{ car.model }} </td>
+                </ng-container>
+          
+                <ng-container matColumnDef="manufacturer">
+                    <th mat-header-cell *matHeaderCellDef> Fabricante </th>
+                    <td mat-cell *matCellDef="let car"> {{ car.manufacturer }} </td>
+                </ng-container>
+          
+                <ng-container matColumnDef="year">
+                    <th mat-header-cell *matHeaderCellDef> Ano </th>
+                    <td mat-cell *matCellDef="let car"> {{ car.year }} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="color">
+                    <th mat-header-cell *matHeaderCellDef> Cor </th>
+                    <td mat-cell *matCellDef="let car"> {{ car.color }} </td>
+                </ng-container>
+          
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+            </table>
+            <mat-paginator [pageSizeOptions]="[10]"></mat-paginator>
+        </div>
+    </mat-card-content>
+</mat-card>

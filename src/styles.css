@@ -1,0 +1,42 @@
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+mat-card {
+    width: 95vw;
+    margin: 2em 0;
+}
+
+.list-header {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+mat-card-actions {
+    display: flex;
+    margin-top: 2.5em;
+}
+
+mat-card-actions form {
+    width: 100%;
+}
+
+form .list-input {
+    width: 30%;
+    margin: 0 15px;
+}
+
+form .list-select {
+    width: 40%;
+    margin: 0 15px;
+}
+
+mat-card-content {
+    display: flex;
+    justify-content: center;
+    margin-top: 2em;
+}
+
+.mat-elevation-z8 {
+    width: 100%;
+}
