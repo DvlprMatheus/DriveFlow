@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static java.lang.String.format;
+
 @RestController
 @RequestMapping("/cars")
 @Slf4j
@@ -23,7 +25,8 @@ public class CarsResource {
 
     @GetMapping("/all")
     public ResponseEntity<List<CarsModel>> findAllCars(){
-       return new ResponseEntity<>(carsService.findAllCars(), HttpStatus.OK);
+       log.info("Looking for registered cars...");
+       return ResponseEntity.ok(carsService.findAllCars());
     }
 
     @GetMapping
@@ -33,6 +36,7 @@ public class CarsResource {
             @RequestParam(required = false) Integer year,
             @RequestParam(required = false) String color) {
 
+        log.info("Checking parameters...");
         CarsFilter carsFilter = new CarsFilter(model, manufacturer, year, color);
         List<CarsResponse> filteredCars = carsService.getCarFiltered(carsFilter);
 
@@ -40,20 +44,30 @@ public class CarsResource {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<CarsModel> findByIdCars(@PathVariable Integer id) {
+    public ResponseEntity<?> findByIdCars(@PathVariable Integer id) {
         CarsModel carsModel = carsService.findByIdCars(id);
 
             if (carsModel != null) {
+                log.info("The car was found");
                 return new ResponseEntity<>(carsModel, HttpStatus.OK);
             } else {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                log.error(format("The car with the ID %d was not found", id));
+                return new ResponseEntity<>("The car was not found!", HttpStatus.NOT_FOUND);
             }
     }
 
     @PostMapping("/create")
     public ResponseEntity<String> saveCars(@RequestBody CreateCarsRequest createCarsRequest){
-        carsService.saveCars(createCarsRequest);
-        return new ResponseEntity<>("Carro registrado com sucesso!", HttpStatus.CREATED);
+        log.info("Registering the car...");
+        CreateCarsRequest newRequest = carsService.saveCars(createCarsRequest);
+
+        if (newRequest != null) {
+            log.info("The car successfully registered");
+            return new ResponseEntity<>("The car successfully registered!", HttpStatus.CREATED);
+        } else {
+            log.error("Fields not filled out correctly");
+            return new ResponseEntity<>("The car cannot be registered!", HttpStatus.BAD_REQUEST);
+        }
     }
 
     @PutMapping("/update/{id}")
@@ -61,9 +75,11 @@ public class CarsResource {
         UpdateCarsRequest updatedCar = carsService.updateCars(id, newCar);
 
         if (updatedCar != null){
-            return new ResponseEntity<>("Carro atualizado com sucesso!", HttpStatus.CREATED);
+            log.info("The car updated successfully!");
+            return new ResponseEntity<>("The car updated successfully!", HttpStatus.CREATED);
         } else {
-            return new ResponseEntity<>("Carro não encontrado!", HttpStatus.NOT_FOUND);
+            log.error(format("The car with the ID %d was not found", id));
+            return new ResponseEntity<>("The car was not found!", HttpStatus.NOT_FOUND);
         }
     }
 
@@ -72,9 +88,11 @@ public class CarsResource {
         boolean verify = carsService.deleteCars(id);
 
         if (verify){
-            return new ResponseEntity<>("Carro deletado com sucesso!", HttpStatus.OK);
+            log.info("The car deleted successfully!");
+            return new ResponseEntity<>("The car deleted successfully!", HttpStatus.OK);
         } else {
-            return new ResponseEntity<>("Carro não encontrado!", HttpStatus.NOT_FOUND);
+            log.error(format("The car with the ID %d was not found", id));
+            return new ResponseEntity<>("The car was not found!", HttpStatus.NOT_FOUND);
         }
     }
 }

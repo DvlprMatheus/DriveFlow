@@ -22,36 +22,62 @@ public class CarsService {
     private CarsRepository carsRepository;
 
     public List<CarsModel> findAllCars(){
+        log.info("Displaying cars registered");
         return carsRepository.findAll();
     }
 
+    public List<CarsResponse> getCarFiltered(CarsFilter carsFilter) {
+        Specification<CarsModel> carsModelSpecification = null;
+        if (carsFilter != null){
+            carsModelSpecification = Specification.where(
+                            CarsRepository.Specs.byYear(carsFilter.getYear()))
+                    .and(CarsRepository.Specs.byModel(carsFilter.getModel()))
+                    .and(CarsRepository.Specs.byManufacturer(carsFilter.getManufacturer()))
+                    .and(CarsRepository.Specs.byColor(carsFilter.getColor()));
+        }
+        log.info("Check done successfully");
+        List<CarsModel> filteredCars = carsRepository.findAll(carsModelSpecification);
+        return filteredCars.stream().map(CarsResponse::new).collect(Collectors.toList());
+    }
+
     public CarsModel findByIdCars(Integer id) {
+        log.info("Checking if the car is registered...");
         return carsRepository.findById(id).orElse(null);
     }
 
-    public void saveCars(CreateCarsRequest createCarsRequest){
+    public CreateCarsRequest saveCars(CreateCarsRequest createCarsRequest){
         CarsModel carsModel = new CarsModel();
+
+        log.info("Allocating all the information...");
         String model = createCarsRequest.getModel();
         String manufacturer = createCarsRequest.getManufacturer();
-        int year = createCarsRequest.getYear();
+        Integer year = createCarsRequest.getYear();
         String color = createCarsRequest.getColor();
 
-        carsModel.setModel(model);
-        carsModel.setManufacturer(manufacturer);
-        carsModel.setYear(year);
-        carsModel.setColor(color);
-        carsRepository.save(carsModel);
+        log.info("Checking if all fields have been filled in...");
+        if (model != null && manufacturer != null && year != null && color != null){
+            carsModel.setModel(model);
+            carsModel.setManufacturer(manufacturer);
+            carsModel.setYear(year);
+            carsModel.setColor(color);
+            carsRepository.save(carsModel);
+            return createCarsRequest;
+        }
+
+        return null;
     }
 
     public UpdateCarsRequest updateCars(Integer id, UpdateCarsRequest newCar) {
         CarsModel existingCar = carsRepository.findById(id).orElse(null);
 
+        log.info("Checking if the car is registered...");
         if (existingCar != null) {
             existingCar.setModel(newCar.getModel());
             existingCar.setManufacturer(newCar.getManufacturer());
             existingCar.setYear(newCar.getYear());
             existingCar.setColor(newCar.getColor());
 
+            log.info("Updating information...");
             carsRepository.save(existingCar);
             return newCar;
         }
@@ -62,24 +88,13 @@ public class CarsService {
     public boolean deleteCars(Integer id) {
         CarsModel existingCar = carsRepository.findById(id).orElse(null);
 
+        log.info("Checking if the car is registered...");
         if (existingCar != null) {
+            log.info("Deleting information...");
             carsRepository.deleteById(id);
             return true;
         }
 
         return false;
-    }
-
-    public List<CarsResponse> getCarFiltered(CarsFilter carsFilter) {
-        Specification<CarsModel> carsModelSpecification = null;
-        if (carsFilter != null){
-            carsModelSpecification = Specification.where(
-                    CarsRepository.Specs.byYear(carsFilter.getYear()))
-                    .and(CarsRepository.Specs.byModel(carsFilter.getModel()))
-                    .and(CarsRepository.Specs.byManufacturer(carsFilter.getManufacturer()))
-                    .and(CarsRepository.Specs.byColor(carsFilter.getColor()));
-        }
-        List<CarsModel> filteredCars = carsRepository.findAll(carsModelSpecification);
-        return filteredCars.stream().map(CarsResponse::new).collect(Collectors.toList());
     }
 }

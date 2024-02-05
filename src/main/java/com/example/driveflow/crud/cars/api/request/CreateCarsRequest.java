@@ -8,6 +8,6 @@ import lombok.Setter;
 public class CreateCarsRequest {
     private String model;
     private String manufacturer;
-    private int year;
+    private Integer year;
     private String color;
 }
