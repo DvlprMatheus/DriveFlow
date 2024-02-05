@@ -1,47 +1,10 @@
 <div class="create-content">
 <mat-card>
     <mat-card-header>
-        <div class="list-header">
-            <div class="list-text">
                 <mat-card-title>Registro de Carros</mat-card-title>
-            </div>
-        </div>
     </mat-card-header>
 
-    <mat-card-actions>
-        <form class="list-form">
-          
-              <mat-form-field class="list-input" color="accent">
-                <mat-label>Modelo</mat-label>
-                <input matInput placeholder="Ex. Corsa">
-              </mat-form-field>
+    <app-forms [btnTxt]="btnTxt"></app-forms>
 
-              <mat-form-field class="list-input" color="accent">
-                <mat-label>Ano</mat-label>
-                <input matInput placeholder="Ex. 2015" color="accent">
-              </mat-form-field>
-
-              <mat-form-field class="list-input" color="accent">
-                <mat-label>Cor</mat-label>
-                <input matInput placeholder="Ex. Prata">
-              </mat-form-field>
-
-              <mat-form-field class="list-select" color="accent">
-                <mat-label>Fabricante</mat-label>
-                <mat-select>
-                  <mat-option>--</mat-option>
-                  @for (manufacturer of manufacturers; track manufacturer) {
-                    <mat-option [value]="manufacturer.name">{{ manufacturer.name }}</mat-option>
-                  }
-                </mat-select>
-              </mat-form-field>
-
-          </form>
-    </mat-card-actions>
-
-    <div class="form-buttons">
-        <button mat-raised-button color="accent" routerLink="/list">Voltar</button>
-        <button mat-raised-button color="accent">Salvar</button>
-    </div>
 </mat-card>
 </div>

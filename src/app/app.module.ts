@@ -23,6 +23,7 @@ import { HomeComponent } from './pages/home/home.component';
 import { ListComponent } from './pages/list/list.component';
 import { CreateComponent } from './pages/create/create.component';
 import { DialogComponent } from './shared/dialog/dialog.component';
+import { FormsComponent } from './shared/forms/forms.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { DialogComponent } from './shared/dialog/dialog.component';
     HomeComponent,
     ListComponent,
     CreateComponent,
-    DialogComponent
+    DialogComponent,
+    FormsComponent
   ],
   imports: [
     BrowserModule,

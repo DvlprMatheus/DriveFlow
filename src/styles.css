@@ -6,27 +6,31 @@ mat-card {
     margin: 2em 0;
 }
 
-.list-header {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-}
-
 mat-card-actions {
     display: flex;
     margin-top: 2.5em;
 }
 
-mat-card-actions form {
+.default-form {
     width: 100%;
 }
 
-form .list-input {
+.form-input {
     width: 30%;
     margin: 0 15px;
 }
 
-form .list-select {
+.form-select {
     width: 40%;
     margin: 0 15px;
+}
+
+.form-buttons {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.form-buttons button{
+    margin: 5px 2em 2em;
 }

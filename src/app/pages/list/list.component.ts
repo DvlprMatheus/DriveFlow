@@ -45,7 +45,9 @@ export class ListComponent implements AfterViewInit {
       {name: "Volvo"}
     ];
 
-    cars = new MatTableDataSource<Car>(this.carsService.findAllCars());
+    listCars: Car[] = [];
+
+    cars!: MatTableDataSource<Car>;
     displayedColumns = ['id', 'model', 'manufacturer', 'year', 'color', 'actions'];
 
     @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -57,7 +59,12 @@ export class ListComponent implements AfterViewInit {
     constructor(
       private carsService: CarsService,
       private matDialog: MatDialog,
-      ) { }
+      ) { 
+        this.carsService.findAllCars().subscribe((items) => {
+          this.listCars = items;
+          this.cars = new MatTableDataSource<Car>(this.listCars);
+        });
+      }
 
     openDialog() {
       this.matDialog.open(DialogComponent);

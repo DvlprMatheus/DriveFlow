@@ -1,7 +1,7 @@
 <mat-card>
     <mat-card-header>
         <div class="list-header">
-            <div class="list-text">
+            <div>
                 <mat-card-title>Carros</mat-card-title>
                 <mat-card-subtitle>Nesta área é possivel listar os carros registrados, criar e editar.</mat-card-subtitle>
             </div>
@@ -15,24 +15,24 @@
     </mat-card-header>
 
     <mat-card-actions>
-        <form class="list-form">
+        <form class="default-form">
           
-              <mat-form-field class="list-input" color="accent">
+              <mat-form-field class="form-input" color="accent">
                 <mat-label>Modelo</mat-label>
                 <input matInput placeholder="Ex. Corsa">
               </mat-form-field>
 
-              <mat-form-field class="list-input" color="accent">
+              <mat-form-field class="form-input" color="accent">
                 <mat-label>Ano</mat-label>
                 <input matInput placeholder="Ex. 2015" color="accent">
               </mat-form-field>
 
-              <mat-form-field class="list-input" color="accent">
+              <mat-form-field class="form-input" color="accent">
                 <mat-label>Cor</mat-label>
                 <input matInput placeholder="Ex. Prata">
               </mat-form-field>
 
-              <mat-form-field class="list-select" color="accent">
+              <mat-form-field class="form-select" color="accent">
                 <mat-label>Fabricante</mat-label>
                 <mat-select>
                   <mat-option>--</mat-option>
@@ -45,12 +45,12 @@
           </form>
     </mat-card-actions>
     
-    <div class="form-buttons">
+    <div class="filter-buttons">
         <button mat-raised-button color="accent">Limpar</button>
         <button mat-raised-button color="accent">Buscar</button>
     </div>
 
-    <mat-card-content>
+    <mat-card-content class="list-table">
 
         <div class="mat-elevation-z8">
             <table mat-table [dataSource]="cars" class="mat-elevation-z8">

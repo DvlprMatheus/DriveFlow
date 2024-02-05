@@ -1,0 +1,35 @@
+<mat-card-actions>
+    <form class="default-form">
+      
+          <mat-form-field class="form-input" color="accent">
+            <mat-label>Modelo</mat-label>
+            <input matInput placeholder="Ex. Corsa">
+          </mat-form-field>
+
+          <mat-form-field class="form-input" color="accent">
+            <mat-label>Ano</mat-label>
+            <input matInput placeholder="Ex. 2015" color="accent">
+          </mat-form-field>
+
+          <mat-form-field class="form-input" color="accent">
+            <mat-label>Cor</mat-label>
+            <input matInput placeholder="Ex. Prata">
+          </mat-form-field>
+
+          <mat-form-field class="form-select" color="accent">
+            <mat-label>Fabricante</mat-label>
+            <mat-select>
+              <mat-option>--</mat-option>
+              @for (manufacturer of manufacturers; track manufacturer) {
+                <mat-option [value]="manufacturer.name">{{ manufacturer.name }}</mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+
+      </form>
+</mat-card-actions>
+
+<div class="form-buttons">
+    <button mat-raised-button color="accent">Limpar</button>
+    <button mat-raised-button color="accent">{{ btnTxt }}</button>
+</div>
