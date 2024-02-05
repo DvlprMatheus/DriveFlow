@@ -13,7 +13,7 @@ export class CarsService {
     return [
       {id: 1, model: 'Kar', manufacturer: 'Ford', year: 2015, color: 'Prata'},
       {id: 2, model: 'Camry', manufacturer: 'Toyota', year: 2022, color: 'Azul'},
-      {id: 3, model: 'Mustang', manufacturer: 'Ford', year: 2021, color: 'Vermelho Candy'},
+      {id: 3, model: 'Mustang', manufacturer: 'Ford', year: 2021, color: 'Vermelho'},
       {id: 4, model: 'Golf', manufacturer: 'Volkswagen', year: 2020, color: 'Preto'},
       {id: 5, model: 'Civic', manufacturer: 'Honda', year: 2015, color: 'Branco'},
       {id: 5, model: 'Corvette', manufacturer: 'Chevrolet', year: 2021, color: 'Verde'},

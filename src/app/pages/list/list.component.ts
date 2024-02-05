@@ -1,7 +1,9 @@
 import { AfterViewInit, Component, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
+import { MatDialog } from '@angular/material/dialog';
 
+import { DialogComponent } from '../../shared/dialog/dialog.component';
 import { CarsService } from '../../services/cars.service';
 
 import { Car } from '../../models/car';
@@ -44,7 +46,7 @@ export class ListComponent implements AfterViewInit {
     ];
 
     cars = new MatTableDataSource<Car>(this.carsService.findAllCars());
-    displayedColumns = ['id', 'model', 'manufacturer', 'year', 'color'];
+    displayedColumns = ['id', 'model', 'manufacturer', 'year', 'color', 'actions'];
 
     @ViewChild(MatPaginator) paginator!: MatPaginator;
 
@@ -52,6 +54,12 @@ export class ListComponent implements AfterViewInit {
       this.cars.paginator = this.paginator;
     }
 
-    constructor(private carsService: CarsService) {
+    constructor(
+      private carsService: CarsService,
+      private matDialog: MatDialog,
+      ) { }
+
+    openDialog() {
+      this.matDialog.open(DialogComponent);
     }
 }

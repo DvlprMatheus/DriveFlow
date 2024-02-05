@@ -1,0 +1,25 @@
+.dialog-content {
+    width: 400px;
+}
+
+.dialog-header {
+    margin-top: 1em;
+}
+
+.dialog-form {
+    margin-top: 1em;
+}
+
+.dialog-input {
+    width: 100%;
+}
+
+.dialog-select {
+    width: 100%;
+}
+
+.dialog-actions {
+    display: flex;
+    justify-content: end;
+    margin: 0 1em 5px 0;
+}

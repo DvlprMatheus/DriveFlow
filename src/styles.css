@@ -30,13 +30,3 @@ form .list-select {
     width: 40%;
     margin: 0 15px;
 }
-
-mat-card-content {
-    display: flex;
-    justify-content: center;
-    margin-top: 2em;
-}
-
-.mat-elevation-z8 {
-    width: 100%;
-}
