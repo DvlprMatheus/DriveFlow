@@ -23,16 +23,10 @@ export class CarsService {
     return this.httpClient.get<ICar[]>(`${this.apiUrl}/all`);
   }
 
-  // Registrar um novo carro.
+  // Encontra um carro pelo Id.
 
-  createCars(car: ICar) {
-    return this.httpClient.post<ICar>(`${this.apiUrl}/create`, car);
-  }
-
-  // Deletar um carro registrado.
-
-  deleteCars(id: number) {
-    return this.httpClient.delete(`${this.apiUrl}/delete/${id}`);
+  findByIdCars(id: number) {
+    return this.httpClient.get<ICar>(`${this.apiUrl}/${id}`)
   }
 
   // Filtrar os carros com os parâmetros informados pelo usuário.
@@ -41,6 +35,24 @@ export class CarsService {
     const params = this.buildQueryParams(filterValues);
 
     return this.httpClient.get<ICar[]>(`${this.apiUrl}${params}`);
+  }
+
+  // Registrar um novo carro.
+
+  createCars(car: ICar) {
+    return this.httpClient.post<ICar>(`${this.apiUrl}/create`, car);
+  }
+
+  // Atualização de um carro já registrado.
+
+  updateCars(id: number, cars: ICar) {
+    return this.httpClient.put<ICar>(`${this.apiUrl}/update/${id}`, cars);
+  }
+
+  // Deletar um carro registrado.
+
+  deleteCars(id: number) {
+    return this.httpClient.delete(`${this.apiUrl}/delete/${id}`);
   }
 
   // Tratamento de filtros vazios para evitar erro na requisição.

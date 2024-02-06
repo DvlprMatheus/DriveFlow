@@ -23,8 +23,10 @@ import { FooterComponent } from './layouts/footer/footer.component';
 import { HomeComponent } from './pages/home/home.component';
 import { ListComponent } from './pages/list/list.component';
 import { CreateComponent } from './pages/create/create.component';
-import { DialogComponent } from './shared/dialog/dialog.component';
 import { FormsComponent } from './shared/forms/forms.component';
+import { EditComponent } from './pages/edit/edit.component';
+import { DialogCreateComponent } from './pages/dialog-create/dialog-create.component';
+import { DialogEditComponent } from './pages/dialog-edit/dialog-edit.component';
 
 
 @NgModule({
@@ -35,8 +37,10 @@ import { FormsComponent } from './shared/forms/forms.component';
     HomeComponent,
     ListComponent,
     CreateComponent,
-    DialogComponent,
-    FormsComponent
+    FormsComponent,
+    EditComponent,
+    DialogCreateComponent,
+    DialogEditComponent
   ],
   imports: [
     BrowserModule,

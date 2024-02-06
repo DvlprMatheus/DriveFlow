@@ -1,16 +1,17 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { Router, ActivatedRoute } from '@angular/router';
 
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 
-import { DialogComponent } from '../../shared/dialog/dialog.component';
+import { DialogCreateComponent } from '../dialog-create/dialog-create.component';
+import { DialogEditComponent } from '../dialog-edit/dialog-edit.component';
 
 import { CarsService } from '../../services/cars.service';
 
 import { ICar } from '../../models/icar';
-import { timeout } from 'rxjs';
 
 @Component({
   selector: 'app-list',
@@ -61,7 +62,9 @@ export class ListComponent implements OnInit{
     constructor(
       private carsService: CarsService,
       private matDialog: MatDialog,
-      private formBuilder: FormBuilder
+      private formBuilder: FormBuilder,
+      private router: Router,
+      private route: ActivatedRoute
       ) { 
         this.filter = this.formBuilder.group({
           model: [''],
@@ -97,14 +100,30 @@ export class ListComponent implements OnInit{
       this.onSubmit();
     }
 
-    openDialog() {
-      const dialogRef: MatDialogRef<DialogComponent> = this.matDialog.open(DialogComponent);
+    openCreateDialog() {
+      const dialogCreateRef: MatDialogRef<DialogCreateComponent> = this.matDialog.open(DialogCreateComponent);
 
-      dialogRef.afterClosed().subscribe(result => {
+      dialogCreateRef.afterClosed().subscribe(result => {
         if (result) {
           this.loadCars();
         }
       });
+    }
+
+    openEditDialog(car: ICar) {
+      const dialogEditRef: MatDialogRef<DialogEditComponent> = this.matDialog.open(DialogEditComponent, {
+        data: car
+      });
+
+      dialogEditRef.afterClosed().subscribe(result => {
+        if (result) {
+          this.loadCars();
+        }
+      });
+    }
+
+    onEdit(car : ICar) {
+      this.router.navigate(['edit', car.id], { relativeTo: this.route})
     }
 
     onDelete(car: ICar) {

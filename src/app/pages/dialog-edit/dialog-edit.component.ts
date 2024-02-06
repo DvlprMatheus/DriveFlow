@@ -1,18 +1,18 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
-import { Location } from '@angular/common';
+import { MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 import { ICar } from '../../models/icar';
 
+import { CarsService } from '../../services/cars.service';
+
 @Component({
-  selector: 'app-forms',
-  templateUrl: './forms.component.html',
-  styleUrl: './forms.component.css'
+  selector: 'app-dialog-edit',
+  templateUrl: './dialog-edit.component.html',
+  styleUrl: './dialog-edit.component.css'
 })
-export class FormsComponent implements OnInit {
-  @Input() btnTxt!: string;
-  @Output() onSubmit = new EventEmitter<ICar>();
+export class DialogEditComponent implements OnInit {
 
   manufacturers = [
     {name: "Audi"},
@@ -44,38 +44,33 @@ export class FormsComponent implements OnInit {
     {name: "Volvo"}
   ];
 
-  form: FormGroup;
+  dialog: FormGroup;
 
   constructor(
     private formBuilder: FormBuilder,
-    private location: Location,
-    private route: ActivatedRoute
+    private carsService: CarsService,
+    private dialogRef: MatDialogRef<DialogEditComponent>,
+    @Inject(MAT_DIALOG_DATA) public car: ICar
     ) {
-      this.form = this.formBuilder.group({
-        id: [''],
+      this.dialog = this.formBuilder.group({
         model: ['', Validators.required],
         year: ['', [Validators.required, Validators.pattern(/^\d{4}$/)]],
         color: ['', Validators.required],
         manufacturer: ['', Validators.required],
       });
-    }
+  }
 
   ngOnInit(): void {
-      const cars: ICar = this.route.snapshot.data['cars'];
-      this.form.setValue({
-        id: cars.id,
-        model: cars.model,
-        manufacturer: cars.manufacturer,
-        year: cars.year,
-        color: cars.color
-      })
+    this.dialog.setValue({
+      model: this.car.model,
+      manufacturer: this.car.manufacturer,
+      year: this.car.year,
+      color: this.car.color
+    })
   }
 
-  submit(){
-    this.onSubmit.emit(this.form.value);
-  }
-
-  onCancel(){
-      this.location.back();
+  onSubmit(){
+    this.carsService.updateCars(this.car.id, this.dialog.value).subscribe();
+    this.dialogRef.close(true);
   }
 }
