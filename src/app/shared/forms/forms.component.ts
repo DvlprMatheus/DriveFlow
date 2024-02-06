@@ -1,5 +1,5 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Location } from '@angular/common';
 
 import { Car } from '../../models/car';
@@ -49,13 +49,13 @@ export class FormsComponent {
     private formBuilder: FormBuilder,
     private location: Location
     ) {
-    this.form = this.formBuilder.group({
-      model: [null],
-      manufacturer: [null],
-      year: [null],
-      color: [null]
-    });
-  }
+      this.form = this.formBuilder.group({
+        model: ['', Validators.required],
+        year: ['', [Validators.required, Validators.pattern(/^\d{4}$/)]],
+        color: ['', Validators.required],
+        manufacturer: ['', Validators.required],
+      });
+    }
 
   submit(){
     this.onSubmit.emit(this.form.value);

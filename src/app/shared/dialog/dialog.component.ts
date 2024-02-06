@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 
 import { CarsService } from '../../services/cars.service';
@@ -48,12 +48,12 @@ export class DialogComponent {
     private carsService: CarsService,
     private dialogRef: MatDialogRef<DialogComponent>
     ) {
-    this.dialog = this.formBuilder.group({
-      model: [null],
-      manufacturer: [null],
-      year: [null],
-      color: [null]
-    });
+      this.dialog = this.formBuilder.group({
+        model: ['', Validators.required],
+        year: ['', [Validators.required, Validators.pattern(/^\d{4}$/)]],
+        color: ['', Validators.required],
+        manufacturer: ['', Validators.required],
+      });
   }
 
   async onSubmit(){

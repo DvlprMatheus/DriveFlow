@@ -1,9 +1,12 @@
 import { Component, OnInit ,ViewChild } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
+
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 
 import { DialogComponent } from '../../shared/dialog/dialog.component';
+
 import { CarsService } from '../../services/cars.service';
 
 import { Car } from '../../models/car';
@@ -45,6 +48,8 @@ export class ListComponent implements OnInit{
       {name: "Volvo"}
     ];
 
+    filter: FormGroup;
+
     listCars: Car[] = [];
 
     cars!: MatTableDataSource<Car>;
@@ -55,7 +60,15 @@ export class ListComponent implements OnInit{
     constructor(
       private carsService: CarsService,
       private matDialog: MatDialog,
-      ) { }
+      private formBuilder: FormBuilder
+      ) { 
+        this.filter = this.formBuilder.group({
+          model: [''],
+          year: [''],
+          color: [''],
+          manufacturer: ['']
+        });
+      }
 
     ngOnInit(): void {
       this.loadCars()
@@ -67,6 +80,20 @@ export class ListComponent implements OnInit{
       this.cars = new MatTableDataSource<Car>(this.listCars);
       this.cars.paginator = this.paginator;
       });
+    }
+
+    onSubmit() {
+      const filterValues = this.filter.value;
+      this.carsService.getCarFiltered(filterValues).subscribe(result => {
+        this.listCars = result;
+        this.cars = new MatTableDataSource<Car>(this.listCars);
+        this.cars.paginator = this.paginator;
+      });
+    }
+
+    onClear() {
+      this.filter.reset();
+      this.onSubmit();
     }
 
     openDialog() {

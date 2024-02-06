@@ -14,27 +14,27 @@
         </div>
     </mat-card-header>
 
-    <mat-card-content class="list-filters">
+    <mat-card-content class="list-filters" [formGroup]="filter">
         <form class="default-form">
           
               <mat-form-field class="form-input">
                 <mat-label>Modelo</mat-label>
-                <input matInput placeholder="Ex. Corsa">
+                <input matInput placeholder="Ex. Corsa" formControlName="model">
               </mat-form-field>
 
               <mat-form-field class="form-input">
                 <mat-label>Ano</mat-label>
-                <input matInput placeholder="Ex. 2015">
+                <input matInput placeholder="Ex. 2015" formControlName="year">
               </mat-form-field>
 
               <mat-form-field class="form-input">
                 <mat-label>Cor</mat-label>
-                <input matInput placeholder="Ex. Prata">
+                <input matInput placeholder="Ex. Prata" formControlName="color">
               </mat-form-field>
 
               <mat-form-field class="form-select">
                 <mat-label>Fabricante</mat-label>
-                <mat-select>
+                <mat-select formControlName="manufacturer">
                   <mat-option>--</mat-option>
                   @for (manufacturer of manufacturers; track manufacturer) {
                     <mat-option [value]="manufacturer.name">{{ manufacturer.name }}</mat-option>
@@ -46,13 +46,13 @@
     </mat-card-content>
     
     <mat-card-actions class="form-buttons">
-        <button mat-raised-button color="primary">Buscar</button>
-        <button mat-raised-button color="warn">Limpar</button>
+        <button mat-raised-button color="primary" (click)="onSubmit()">Buscar</button>
+        <button mat-raised-button color="warn" (click)="onClear()">Limpar</button>
     </mat-card-actions>
 
     <mat-card-content class="list-table">
 
-        <div class="mat-elevation-z8">
+        <div class="mat-elevation-z8" *ngIf="listCars.length > 0">
             <table mat-table [dataSource]="cars" class="mat-elevation-z8">
           
                 <ng-container matColumnDef="id">
@@ -102,6 +102,10 @@
 
             </table>
             <mat-paginator [pageSizeOptions]="[10]"></mat-paginator>
+        </div>
+
+        <div *ngIf="listCars.length === 0" class="empty-table">
+            <h1>Nenhum carro encontrado.</h1>
         </div>
     </mat-card-content>
 </mat-card>
