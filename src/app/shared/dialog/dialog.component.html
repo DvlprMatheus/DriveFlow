@@ -3,14 +3,14 @@
         <header class="dialog-header">
             <h1>Registro de Carros</h1>
         </header>
-        <form class="dialog-form">
-            <mat-form-field class="dialog-input" color="accent">
-                <input matInput placeholder="Modelo">
+        <form class="dialog-form" [formGroup]="dialog">
+            <mat-form-field class="dialog-input">
+                <input matInput placeholder="Modelo" formControlName="model">
             </mat-form-field>
         
-            <mat-form-field class="dialog-select" color="accent">
+            <mat-form-field class="dialog-select">
                 <mat-label>Fabricante</mat-label>
-                <mat-select>
+                <mat-select formControlName="manufacturer">
                   <mat-option>--</mat-option>
                   @for (manufacturer of manufacturers; track manufacturer) {
                     <mat-option [value]="manufacturer.name">{{ manufacturer.name }}</mat-option>
@@ -18,17 +18,17 @@
                 </mat-select>
               </mat-form-field>
         
-            <mat-form-field class="dialog-input" color="accent">
-                <input matInput placeholder="Ano">
+            <mat-form-field class="dialog-input">
+                <input matInput placeholder="Ano" formControlName="year">
             </mat-form-field>
         
-            <mat-form-field class="dialog-input" color="accent">
-                <input matInput placeholder="Cor">
+            <mat-form-field class="dialog-input">
+                <input matInput placeholder="Cor" formControlName="color">
             </mat-form-field>
         </form>
     </mat-dialog-content>
     <mat-dialog-actions class="dialog-actions">
-        <button mat-raised-button color="accent">Salvar</button>
+        <button mat-raised-button color="primary" (click)="onSubmit()">Salvar</button>
         <button mat-raised-button color="warn" matDialogClose>Cancelar</button>
     </mat-dialog-actions>
 </div>

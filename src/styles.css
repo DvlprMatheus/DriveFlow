@@ -6,9 +6,9 @@ mat-card {
     margin: 2em 0;
 }
 
-mat-card-actions {
+.form-align {
     display: flex;
-    margin-top: 2.5em;
+    margin-top: 1.0em;
 }
 
 .default-form {
@@ -27,10 +27,10 @@ mat-card-actions {
 
 .form-buttons {
     display: flex;
-    justify-content: space-between;
+    justify-content: end;
     width: 100%;
 }
 
 .form-buttons button{
-    margin: 5px 2em 2em;
+    margin: 1em 10px 2em 0;
 }

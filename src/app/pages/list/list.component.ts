@@ -1,7 +1,7 @@
-import { AfterViewInit, Component, ViewChild } from '@angular/core';
+import { Component, OnInit ,ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 
 import { DialogComponent } from '../../shared/dialog/dialog.component';
 import { CarsService } from '../../services/cars.service';
@@ -13,7 +13,7 @@ import { Car } from '../../models/car';
   templateUrl: './list.component.html',
   styleUrl: './list.component.css'
 })
-export class ListComponent implements AfterViewInit {
+export class ListComponent implements OnInit{
     
     manufacturers = [
       {name: "Audi"},
@@ -52,21 +52,30 @@ export class ListComponent implements AfterViewInit {
 
     @ViewChild(MatPaginator) paginator!: MatPaginator;
 
-    ngAfterViewInit() {
-      this.cars.paginator = this.paginator;
-    }
-
     constructor(
       private carsService: CarsService,
       private matDialog: MatDialog,
-      ) { 
-        this.carsService.findAllCars().subscribe((items) => {
-          this.listCars = items;
-          this.cars = new MatTableDataSource<Car>(this.listCars);
-        });
-      }
+      ) { }
+
+    ngOnInit(): void {
+      this.loadCars()
+    }
+
+    loadCars() {
+      this.carsService.findAllCars().subscribe((items) => {
+      this.listCars = items;
+      this.cars = new MatTableDataSource<Car>(this.listCars);
+      this.cars.paginator = this.paginator;
+      });
+    }
 
     openDialog() {
-      this.matDialog.open(DialogComponent);
-    }
+      const dialogRef: MatDialogRef<DialogComponent> = this.matDialog.open(DialogComponent);
+
+      dialogRef.afterClosed().subscribe(result => {
+        if (result) {
+          this.loadCars();
+        }
+      });
+  }
 }

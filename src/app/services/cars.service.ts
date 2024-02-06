@@ -20,4 +20,8 @@ export class CarsService {
   findAllCars(): Observable<Car[]> {
     return this.httpClient.get<Car[]>(`${this.apiUrl}/all`);
   }
+
+  createCars(car: Car) {
+    return this.httpClient.post<Car>(`${this.apiUrl}/create`, car);
+  }
 }

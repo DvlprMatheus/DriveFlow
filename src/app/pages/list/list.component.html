@@ -6,7 +6,7 @@
                 <mat-card-subtitle>Nesta área é possivel listar os carros registrados, criar e editar.</mat-card-subtitle>
             </div>
 
-            <button mat-raised-button color="accent" [matMenuTriggerFor]="create">Adicionar</button>
+            <button mat-raised-button color="primary" [matMenuTriggerFor]="create">Adicionar</button>
             <mat-menu #create="matMenu">
                 <button mat-menu-item routerLink="/create">Formulário</button>
                 <button mat-menu-item (click)="openDialog()">Diálogo</button>
@@ -14,25 +14,25 @@
         </div>
     </mat-card-header>
 
-    <mat-card-actions>
+    <mat-card-content class="list-filters">
         <form class="default-form">
           
-              <mat-form-field class="form-input" color="accent">
+              <mat-form-field class="form-input">
                 <mat-label>Modelo</mat-label>
                 <input matInput placeholder="Ex. Corsa">
               </mat-form-field>
 
-              <mat-form-field class="form-input" color="accent">
+              <mat-form-field class="form-input">
                 <mat-label>Ano</mat-label>
-                <input matInput placeholder="Ex. 2015" color="accent">
+                <input matInput placeholder="Ex. 2015">
               </mat-form-field>
 
-              <mat-form-field class="form-input" color="accent">
+              <mat-form-field class="form-input">
                 <mat-label>Cor</mat-label>
                 <input matInput placeholder="Ex. Prata">
               </mat-form-field>
 
-              <mat-form-field class="form-select" color="accent">
+              <mat-form-field class="form-select">
                 <mat-label>Fabricante</mat-label>
                 <mat-select>
                   <mat-option>--</mat-option>
@@ -43,12 +43,12 @@
               </mat-form-field>
 
           </form>
-    </mat-card-actions>
+    </mat-card-content>
     
-    <div class="filter-buttons">
-        <button mat-raised-button color="accent">Limpar</button>
-        <button mat-raised-button color="accent">Buscar</button>
-    </div>
+    <mat-card-actions class="form-buttons">
+        <button mat-raised-button color="primary">Buscar</button>
+        <button mat-raised-button color="warn">Limpar</button>
+    </mat-card-actions>
 
     <mat-card-content class="list-table">
 

@@ -15,6 +15,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 
 
 import { AppRoutingModule } from './app-routing.module';
+import { ReactiveFormsModule } from '@angular/forms';
 import { AppComponent } from './app.component';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { HeaderComponent } from './layouts/header/header.component';
@@ -24,6 +25,7 @@ import { ListComponent } from './pages/list/list.component';
 import { CreateComponent } from './pages/create/create.component';
 import { DialogComponent } from './shared/dialog/dialog.component';
 import { FormsComponent } from './shared/forms/forms.component';
+
 
 @NgModule({
   declarations: [
@@ -49,7 +51,8 @@ import { FormsComponent } from './shared/forms/forms.component';
     MatPaginatorModule,
     MatMenuModule,
     MatDialogModule,
-    HttpClientModule
+    HttpClientModule,
+    ReactiveFormsModule
   ],
   providers: [
     provideAnimationsAsync()

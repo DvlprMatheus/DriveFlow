@@ -4,14 +4,9 @@
     width: 100%;
 }
 
-.filter-buttons {
+.list-filters {
     display: flex;
-    justify-content: end;
-    width: 97%;
-}
-
-.filter-buttons button{
-    margin: 5px;
+    margin-top: 2.5em;
 }
 
 .list-table {

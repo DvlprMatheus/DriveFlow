@@ -1,24 +1,24 @@
-<mat-card-actions>
-    <form class="default-form">
+<mat-card-content class="form-align">
+    <form class="default-form" [formGroup]="form">
       
-          <mat-form-field class="form-input" color="accent">
+          <mat-form-field class="form-input">
             <mat-label>Modelo</mat-label>
-            <input matInput placeholder="Ex. Corsa">
+            <input matInput placeholder="Ex. Corsa" formControlName="model" required>
           </mat-form-field>
 
-          <mat-form-field class="form-input" color="accent">
+          <mat-form-field class="form-input">
             <mat-label>Ano</mat-label>
-            <input matInput placeholder="Ex. 2015" color="accent">
+            <input matInput placeholder="Ex. 2015" formControlName="year" required>
           </mat-form-field>
 
-          <mat-form-field class="form-input" color="accent">
+          <mat-form-field class="form-input">
             <mat-label>Cor</mat-label>
-            <input matInput placeholder="Ex. Prata">
+            <input matInput placeholder="Ex. Prata" formControlName="color" required>
           </mat-form-field>
 
-          <mat-form-field class="form-select" color="accent">
+          <mat-form-field class="form-select">
             <mat-label>Fabricante</mat-label>
-            <mat-select>
+            <mat-select formControlName="manufacturer" required>
               <mat-option>--</mat-option>
               @for (manufacturer of manufacturers; track manufacturer) {
                 <mat-option [value]="manufacturer.name">{{ manufacturer.name }}</mat-option>
@@ -27,9 +27,9 @@
           </mat-form-field>
 
       </form>
-</mat-card-actions>
 
-<div class="form-buttons">
-    <button mat-raised-button color="accent">Limpar</button>
-    <button mat-raised-button color="accent">{{ btnTxt }}</button>
-</div>
+      <mat-card-actions class="form-buttons">
+        <button mat-raised-button color="primary" (click)="submit()">{{ btnTxt }}</button>
+        <button mat-raised-button color="warn" (click)="onCancel()">Voltar</button>
+      </mat-card-actions>
+</mat-card-content>

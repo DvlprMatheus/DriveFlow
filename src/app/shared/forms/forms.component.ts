@@ -1,4 +1,8 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { Location } from '@angular/common';
+
+import { Car } from '../../models/car';
 
 @Component({
   selector: 'app-forms',
@@ -7,6 +11,7 @@ import { Component, Input } from '@angular/core';
 })
 export class FormsComponent {
   @Input() btnTxt!: string;
+  @Output() onSubmit = new EventEmitter<Car>();
 
   manufacturers = [
     {name: "Audi"},
@@ -37,4 +42,26 @@ export class FormsComponent {
     {name: "Volkswagen"},
     {name: "Volvo"}
   ];
+
+  form: FormGroup;
+
+  constructor(
+    private formBuilder: FormBuilder,
+    private location: Location
+    ) {
+    this.form = this.formBuilder.group({
+      model: [null],
+      manufacturer: [null],
+      year: [null],
+      color: [null]
+    });
+  }
+
+  submit(){
+    this.onSubmit.emit(this.form.value);
+  }
+
+  onCancel(){
+      this.location.back();
+  }
 }
