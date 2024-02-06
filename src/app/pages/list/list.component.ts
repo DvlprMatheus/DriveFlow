@@ -1,4 +1,4 @@
-import { Component, OnInit ,ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 
 import { MatPaginator } from '@angular/material/paginator';
@@ -9,7 +9,8 @@ import { DialogComponent } from '../../shared/dialog/dialog.component';
 
 import { CarsService } from '../../services/cars.service';
 
-import { Car } from '../../models/car';
+import { ICar } from '../../models/icar';
+import { timeout } from 'rxjs';
 
 @Component({
   selector: 'app-list',
@@ -50,9 +51,9 @@ export class ListComponent implements OnInit{
 
     filter: FormGroup;
 
-    listCars: Car[] = [];
+    listCars: ICar[] = [];
 
-    cars!: MatTableDataSource<Car>;
+    cars!: MatTableDataSource<ICar>;
     displayedColumns = ['id', 'model', 'manufacturer', 'year', 'color', 'actions'];
 
     @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -77,8 +78,8 @@ export class ListComponent implements OnInit{
     loadCars() {
       this.carsService.findAllCars().subscribe((items) => {
       this.listCars = items;
-      this.cars = new MatTableDataSource<Car>(this.listCars);
-      this.cars.paginator = this.paginator;
+      this.cars = new MatTableDataSource<ICar>(this.listCars);
+      setTimeout(() => {this.cars.paginator = this.paginator}, 100)
       });
     }
 
@@ -86,7 +87,7 @@ export class ListComponent implements OnInit{
       const filterValues = this.filter.value;
       this.carsService.getCarFiltered(filterValues).subscribe(result => {
         this.listCars = result;
-        this.cars = new MatTableDataSource<Car>(this.listCars);
+        this.cars = new MatTableDataSource<ICar>(this.listCars);
         this.cars.paginator = this.paginator;
       });
     }
@@ -104,5 +105,10 @@ export class ListComponent implements OnInit{
           this.loadCars();
         }
       });
-  }
+    }
+
+    onDelete(car: ICar) {
+      this.carsService.deleteCars(car.id).subscribe();
+      setTimeout(() => {this.loadCars()}, 100)
+    }
 }

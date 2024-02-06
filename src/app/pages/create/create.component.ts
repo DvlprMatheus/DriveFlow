@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { Car } from '../../models/car';
+import { ICar } from '../../models/icar';
 import { CarsService } from '../../services/cars.service';
 
 @Component({
@@ -13,7 +13,7 @@ export class CreateComponent {
 
   constructor(private carsService: CarsService) {}
 
-  async createHandler(car : Car) {
+  async createHandler(car : ICar) {
     
   await this.carsService.createCars(car).subscribe();
   }

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core'
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-import { Car } from '../models/car';
+import { ICar } from '../models/icar';
 
 import { environment } from '../../environments/environment';
 
@@ -17,21 +17,33 @@ export class CarsService {
   constructor(private httpClient: HttpClient) {
   }
 
-  findAllCars(): Observable<Car[]> {
-    return this.httpClient.get<Car[]>(`${this.apiUrl}/all`);
+  // Listar todos os carros registrados.
+
+  findAllCars(): Observable<ICar[]> {
+    return this.httpClient.get<ICar[]>(`${this.apiUrl}/all`);
   }
 
-  createCars(car: Car) {
-    return this.httpClient.post<Car>(`${this.apiUrl}/create`, car);
+  // Registrar um novo carro.
+
+  createCars(car: ICar) {
+    return this.httpClient.post<ICar>(`${this.apiUrl}/create`, car);
   }
 
-  getCarFiltered(filterValues: any): Observable<Car[]> {
+  // Deletar um carro registrado.
+
+  deleteCars(id: number) {
+    return this.httpClient.delete(`${this.apiUrl}/delete/${id}`);
+  }
+
+  // Filtrar os carros com os parâmetros informados pelo usuário.
+
+  getCarFiltered(filterValues: any): Observable<ICar[]> {
     const params = this.buildQueryParams(filterValues);
 
-    return this.httpClient.get<Car[]>(`${this.apiUrl}${params}`);
+    return this.httpClient.get<ICar[]>(`${this.apiUrl}${params}`);
   }
 
-  // Tratamento de filtros vazios.
+  // Tratamento de filtros vazios para evitar erro na requisição.
 
   private buildQueryParams(filterValues: any): string {
     let queryParams = new HttpParams();
@@ -44,5 +56,4 @@ export class CarsService {
 
     return queryParams.toString() ? `?${queryParams.toString()}` : '';
   }
-
 }

@@ -2,7 +2,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Location } from '@angular/common';
 
-import { Car } from '../../models/car';
+import { ICar } from '../../models/icar';
 
 @Component({
   selector: 'app-forms',
@@ -11,7 +11,7 @@ import { Car } from '../../models/car';
 })
 export class FormsComponent {
   @Input() btnTxt!: string;
-  @Output() onSubmit = new EventEmitter<Car>();
+  @Output() onSubmit = new EventEmitter<ICar>();
 
   manufacturers = [
     {name: "Audi"},
