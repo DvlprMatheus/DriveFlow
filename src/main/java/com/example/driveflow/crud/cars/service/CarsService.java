@@ -6,6 +6,7 @@ import com.example.driveflow.crud.cars.api.request.UpdateCarsRequest;
 import com.example.driveflow.crud.cars.api.response.CarsResponse;
 import com.example.driveflow.crud.cars.model.CarsModel;
 import com.example.driveflow.crud.cars.repository.CarsRepository;
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
@@ -45,26 +46,22 @@ public class CarsService {
         return carsRepository.findById(id).orElse(null);
     }
 
-    public CreateCarsRequest saveCars(CreateCarsRequest createCarsRequest){
-        CarsModel carsModel = new CarsModel();
+    public void createCars(CreateCarsRequest createCarsRequest){
+        try {
+            CarsModel carsModel = new CarsModel();
 
-        log.info("Allocating all the information...");
-        String model = createCarsRequest.getModel();
-        String manufacturer = createCarsRequest.getManufacturer();
-        Integer year = createCarsRequest.getYear();
-        String color = createCarsRequest.getColor();
+            log.info("Allocating all the information...");
+            carsModel.setModel(createCarsRequest.getModel());
+            carsModel.setManufacturer(createCarsRequest.getManufacturer());
+            carsModel.setYear(createCarsRequest.getYear());
+            carsModel.setColor(createCarsRequest.getColor());
 
-        log.info("Checking if all fields have been filled in...");
-        if (model != null && manufacturer != null && year != null && color != null){
-            carsModel.setModel(model);
-            carsModel.setManufacturer(manufacturer);
-            carsModel.setYear(year);
-            carsModel.setColor(color);
+            log.info("The car successfully registered!");
             carsRepository.save(carsModel);
-            return createCarsRequest;
+        } catch (Exception ex) {
+            log.error("An error occurred while registering the car", ex);
+            throw new CarsServiceException("Error registering the car: " + ex.getMessage(), ex);
         }
-
-        return null;
     }
 
     public UpdateCarsRequest updateCars(Integer id, UpdateCarsRequest newCar) {
@@ -96,5 +93,15 @@ public class CarsService {
         }
 
         return false;
+    }
+
+    public static class CarsServiceException extends RuntimeException {
+        public CarsServiceException(String message) {
+            super(message);
+        }
+
+        public CarsServiceException(String message, Throwable cause) {
+            super(message, cause);
+        }
     }
 }
