@@ -6,8 +6,8 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 
-import { DialogCreateComponent } from '../dialog-create/dialog-create.component';
-import { DialogEditComponent } from '../dialog-edit/dialog-edit.component';
+import { DialogCreateComponent } from '../../shared/dialog-create/dialog-create.component';
+import { DialogEditComponent } from '../../shared/dialog-edit/dialog-edit.component';
 
 import { CarsService } from '../../services/cars.service';
 
@@ -105,7 +105,7 @@ export class ListComponent implements OnInit{
 
       dialogCreateRef.afterClosed().subscribe(result => {
         if (result) {
-          this.loadCars();
+          setTimeout(() => {this.loadCars()}, 100)
         }
       });
     }
@@ -117,7 +117,7 @@ export class ListComponent implements OnInit{
 
       dialogEditRef.afterClosed().subscribe(result => {
         if (result) {
-          this.loadCars();
+          setTimeout(() => {this.loadCars()}, 100)
         }
       });
     }
@@ -127,7 +127,7 @@ export class ListComponent implements OnInit{
     }
 
     onDelete(car: ICar) {
-      this.carsService.deleteCars(car.id).subscribe();
+      this.carsService.deleteCars(car.id!).subscribe();
       setTimeout(() => {this.loadCars()}, 100)
     }
 }

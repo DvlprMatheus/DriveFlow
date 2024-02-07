@@ -1,5 +1,9 @@
 import { Component } from '@angular/core';
 
+import { MatDialog } from '@angular/material/dialog';
+
+import { DialogConfirmComponent } from '../../shared/dialog-confirm/dialog-confirm.component';
+
 import { ICar } from '../../models/icar';
 import { CarsService } from '../../services/cars.service';
 
@@ -11,10 +15,17 @@ import { CarsService } from '../../services/cars.service';
 export class CreateComponent {
   btnTxt: string = 'Salvar';
 
-  constructor(private carsService: CarsService) {}
+  constructor(
+    private carsService: CarsService,
+    private matDialog: MatDialog
+    ) {}
 
   async createHandler(car : ICar) {
-    
-  await this.carsService.createCars(car).subscribe();
+    await this.carsService.createCars(car).subscribe();
+    this.openConfirmDialog();
+  }
+
+  openConfirmDialog() {
+    this.matDialog.open(DialogConfirmComponent);
   }
 }

@@ -19,7 +19,7 @@ export class EditComponent {
     ) {}
 
   editHandler(car : ICar) {
-    this.carsService.updateCars(car.id, car).subscribe();
+    this.carsService.updateCars(car.id!, car).subscribe();
     setTimeout(() => {
       this.router.navigate(['/list']);
     }, 100);

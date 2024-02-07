@@ -25,8 +25,9 @@ import { ListComponent } from './pages/list/list.component';
 import { CreateComponent } from './pages/create/create.component';
 import { FormsComponent } from './shared/forms/forms.component';
 import { EditComponent } from './pages/edit/edit.component';
-import { DialogCreateComponent } from './pages/dialog-create/dialog-create.component';
-import { DialogEditComponent } from './pages/dialog-edit/dialog-edit.component';
+import { DialogCreateComponent } from './shared/dialog-create/dialog-create.component';
+import { DialogEditComponent } from './shared/dialog-edit/dialog-edit.component';
+import { DialogConfirmComponent } from './shared/dialog-confirm/dialog-confirm.component';
 
 
 @NgModule({
@@ -40,7 +41,8 @@ import { DialogEditComponent } from './pages/dialog-edit/dialog-edit.component';
     FormsComponent,
     EditComponent,
     DialogCreateComponent,
-    DialogEditComponent
+    DialogEditComponent,
+    DialogConfirmComponent
   ],
   imports: [
     BrowserModule,
@@ -56,7 +58,7 @@ import { DialogEditComponent } from './pages/dialog-edit/dialog-edit.component';
     MatMenuModule,
     MatDialogModule,
     HttpClientModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
   ],
   providers: [
     provideAnimationsAsync()

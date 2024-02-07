@@ -1,7 +1,7 @@
 export interface ICar {
-    id: number;
+    id: number | null;
     model: string;
     manufacturer: string;
-    year: number;
+    year: number | null;
     color: string;
 }
