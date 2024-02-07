@@ -2,16 +2,8 @@
     <img src="/assets/images/logo_black.png" alt="logotipo" *ngIf="verifybtn == false" routerLink="">
     <img src="/assets/images/logo_black.png" alt="logotipo" *ngIf="verifybtn == true" routerLink="/list">
     <span class="example-spacer"></span>
-    <div *ngIf="verifybtn == false">
-        <button mat-button (click)="btnAllow()" routerLink="/list">
-            <mat-icon>account_circle</mat-icon>
-            Login
-        </button>
-    </div>
-    <div *ngIf="verifybtn == true">
-        <button mat-button (click)="btnDeny()" routerLink="">
-            <mat-icon>power_settings_new</mat-icon>
-            Sair
-        </button>
-    </div>
+    <button mat-button (click)="verifybtn ? logout() : login()">
+        <mat-icon>{{ verifybtn ? 'power_settings_new' : 'account_circle' }}</mat-icon>
+        {{ verifybtn ? 'Sair' : 'Login' }}
+    </button>
 </mat-toolbar>

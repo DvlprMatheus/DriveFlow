@@ -9,6 +9,8 @@
     margin-top: 2.5em;
 }
 
+/* Table */
+
 .list-table {
     display: flex;
     justify-content: center;
@@ -16,7 +18,7 @@
 }
 
 .mat-elevation-z8 {
-    width: 90vw;
+    width: 100%;
 }
 
 .colunm-actions {
@@ -27,7 +29,7 @@
 
 .line-actions {
     display: flex;
-    padding: 0.2em;
+    padding: 0.5em;
     justify-content: center;    
 }
 

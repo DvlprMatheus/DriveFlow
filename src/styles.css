@@ -2,38 +2,37 @@ html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 mat-card {
-    width: 95vw;
     margin: 2em 0;
 }
 
 /* Formulários */
 
-.form-align {
+.forms-align {
     display: flex;
     margin-top: 1.0em;
 }
 
-.default-form {
+.default-forms {
     width: 100%;
 }
 
-.form-input {
+.forms-input {
     width: 30%;
     margin: 0 15px 5px 15px;
 }
 
-.form-select {
+.forms-select {
     width: 40%;
     margin: 0 15px;
 }
 
-.form-buttons {
+.forms-buttons {
     display: flex;
     justify-content: end;
     width: 100%;
 }
 
-.form-buttons button{
+.forms-buttons button{
     margin: 1em 10px 2em 0;
 }
 

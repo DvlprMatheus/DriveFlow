@@ -1,111 +1,113 @@
-<mat-card>
-    <mat-card-header>
-        <div class="list-header">
-            <div>
-                <mat-card-title>Carros</mat-card-title>
-                <mat-card-subtitle>Nesta área é possivel listar os carros registrados, criar e editar.</mat-card-subtitle>
+<div class="container-sm">
+    <mat-card>
+        <mat-card-header>
+            <div class="list-header">
+                <div>
+                    <mat-card-title>Carros</mat-card-title>
+                    <mat-card-subtitle>Nesta área é possivel listar os carros registrados, criar e editar.</mat-card-subtitle>
+                </div>
+
+                <button mat-raised-button color="primary" [matMenuTriggerFor]="create">Adicionar</button>
+                <mat-menu #create="matMenu">
+                    <button mat-menu-item routerLink="/list/create">Formulário</button>
+                    <button mat-menu-item (click)="openCreateDialog()">Diálogo</button>
+                </mat-menu>
             </div>
+        </mat-card-header>
 
-            <button mat-raised-button color="primary" [matMenuTriggerFor]="create">Adicionar</button>
-            <mat-menu #create="matMenu">
-                <button mat-menu-item routerLink="/list/create">Formulário</button>
-                <button mat-menu-item (click)="openCreateDialog()">Diálogo</button>
-            </mat-menu>
-        </div>
-    </mat-card-header>
-
-    <mat-card-content class="list-filters" [formGroup]="filter">
-        <form class="default-form">
+        <mat-card-content class="list-filters" [formGroup]="filter">
+            <form class="default-forms">
           
-              <mat-form-field class="form-input">
-                <mat-label>Modelo</mat-label>
-                <input matInput placeholder="Ex. Corsa" formControlName="model">
-              </mat-form-field>
+                <mat-form-field class="forms-input">
+                    <mat-label>Modelo</mat-label>
+                    <input matInput placeholder="Ex. Corsa" formControlName="model">
+                </mat-form-field>
 
-              <mat-form-field class="form-input">
-                <mat-label>Ano</mat-label>
-                <input matInput placeholder="Ex. 2015" formControlName="year">
-              </mat-form-field>
+                <mat-form-field class="forms-input">
+                    <mat-label>Ano</mat-label>
+                    <input matInput placeholder="Ex. 2015" formControlName="year">
+                </mat-form-field>
 
-              <mat-form-field class="form-input">
-                <mat-label>Cor</mat-label>
-                <input matInput placeholder="Ex. Prata" formControlName="color">
-              </mat-form-field>
+                <mat-form-field class="forms-input">
+                    <mat-label>Cor</mat-label>
+                    <input matInput placeholder="Ex. Prata" formControlName="color">
+                </mat-form-field>
 
-              <mat-form-field class="form-select">
-                <mat-label>Fabricante</mat-label>
-                <mat-select formControlName="manufacturer">
-                  <mat-option>--</mat-option>
-                  @for (manufacturer of manufacturers; track manufacturer) {
-                    <mat-option [value]="manufacturer.name">{{ manufacturer.name }}</mat-option>
-                  }
-                </mat-select>
-              </mat-form-field>
+                <mat-form-field class="forms-select">
+                    <mat-label>Fabricante</mat-label>
+                    <mat-select formControlName="manufacturer">
+                    <mat-option>--</mat-option>
+                        @for (manufacturer of manufacturers; track manufacturer) {
+                        <mat-option [value]="manufacturer.name">{{ manufacturer.name }}</mat-option>
+                    }
+                    </mat-select>
+                </mat-form-field>
 
-          </form>
-    </mat-card-content>
+            </form>
+        </mat-card-content>
     
-    <mat-card-actions class="form-buttons">
-        <button mat-raised-button color="primary" (click)="onSubmit()">Buscar</button>
-        <button mat-raised-button color="warn" (click)="onClear()">Limpar</button>
-    </mat-card-actions>
+        <mat-card-actions class="forms-buttons">
+            <button mat-raised-button color="primary" (click)="onSubmit()">Buscar</button>
+            <button mat-raised-button color="warn" (click)="onClear()">Limpar</button>
+        </mat-card-actions>
 
-    <mat-card-content class="list-table">
+        <mat-card-content class="list-table">
 
-        <div class="mat-elevation-z8" *ngIf="listCars.length > 0">
-            <table mat-table [dataSource]="cars" class="mat-elevation-z8">
+            <div class="mat-elevation-z8" *ngIf="listCars.length > 0">
+                <table mat-table [dataSource]="cars" class="mat-elevation-z8">
           
-                <ng-container matColumnDef="id">
-                    <th mat-header-cell *matHeaderCellDef> Id </th>
-                    <td mat-cell *matCellDef="let car"> {{ car.id }} </td>
-                </ng-container>
+                    <ng-container matColumnDef="id">
+                        <th mat-header-cell *matHeaderCellDef> Id </th>
+                        <td mat-cell *matCellDef="let car"> {{ car.id }} </td>
+                    </ng-container>
           
-                <ng-container matColumnDef="model">
-                    <th mat-header-cell *matHeaderCellDef> Modelo </th>
-                    <td mat-cell *matCellDef="let car"> {{ car.model }} </td>
-                </ng-container>
+                    <ng-container matColumnDef="model">
+                        <th mat-header-cell *matHeaderCellDef> Modelo </th>
+                        <td mat-cell *matCellDef="let car"> {{ car.model }} </td>
+                    </ng-container>
           
-                <ng-container matColumnDef="manufacturer">
-                    <th mat-header-cell *matHeaderCellDef> Fabricante </th>
-                    <td mat-cell *matCellDef="let car"> {{ car.manufacturer }} </td>
-                </ng-container>
+                    <ng-container matColumnDef="manufacturer">
+                        <th mat-header-cell *matHeaderCellDef> Fabricante </th>
+                        <td mat-cell *matCellDef="let car"> {{ car.manufacturer }} </td>
+                    </ng-container>
           
-                <ng-container matColumnDef="year">
-                    <th mat-header-cell *matHeaderCellDef> Ano </th>
-                    <td mat-cell *matCellDef="let car"> {{ car.year }} </td>
-                </ng-container>
+                    <ng-container matColumnDef="year">
+                        <th mat-header-cell *matHeaderCellDef> Ano </th>
+                        <td mat-cell *matCellDef="let car"> {{ car.year }} </td>
+                    </ng-container>
 
-                <ng-container matColumnDef="color">
-                    <th mat-header-cell *matHeaderCellDef> Cor </th>
-                    <td mat-cell *matCellDef="let car"> {{ car.color }} </td>
-                </ng-container>
+                    <ng-container matColumnDef="color">
+                        <th mat-header-cell *matHeaderCellDef> Cor </th>
+                        <td mat-cell *matCellDef="let car"> {{ car.color }} </td>
+                    </ng-container>
 
-                <ng-container matColumnDef="actions">
-                    <th mat-header-cell *matHeaderCellDef class="colunm-actions"> Ações </th>
-                         <td mat-cell *matCellDef="let car" class="line-actions">
-                            <button mat-icon-button [matMenuTriggerFor]="edit">
-                                <mat-icon>create</mat-icon>
-                            </button>
+                    <ng-container matColumnDef="actions">
+                        <th mat-header-cell *matHeaderCellDef class="colunm-actions"> Ações </th>
+                            <td mat-cell *matCellDef="let car" class="line-actions">
+                                <button mat-icon-button [matMenuTriggerFor]="edit">
+                                    <mat-icon>create</mat-icon>
+                                </button>
                             <mat-menu #edit="matMenu">
                                 <button mat-menu-item (click)="onEdit(car)">Formulário</button>
                                 <button mat-menu-item (click)="openEditDialog(car)">Diálogo</button>
                                 <button mat-menu-item>Tabela</button>
                             </mat-menu>
-                            <button mat-icon-button (click)="onDelete(car)">
-                                <mat-icon>delete</mat-icon>
-                            </button>
-                         </td>
-                 </ng-container>
+                                <button mat-icon-button (click)="onDelete(car)">
+                                    <mat-icon>delete</mat-icon>
+                                </button>
+                            </td>
+                    </ng-container>
 
-                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                <tr mat-row *matRowDef="let car; columns: displayedColumns;"></tr>
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let car; columns: displayedColumns;"></tr>
 
-            </table>
-            <mat-paginator [pageSizeOptions]="[10]"></mat-paginator>
-        </div>
+                </table>
+                <mat-paginator [pageSizeOptions]="[10]"></mat-paginator>
+            </div>
 
-        <div *ngIf="listCars.length === 0" class="empty-table">
-            <h1>Nenhum carro encontrado.</h1>
-        </div>
-    </mat-card-content>
-</mat-card>
+            <div *ngIf="listCars.length === 0" class="empty-table">
+                <h1>Nenhum carro encontrado.</h1>
+            </div>
+        </mat-card-content>
+    </mat-card>
+</div>

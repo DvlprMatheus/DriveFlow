@@ -1,9 +1,5 @@
-.container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    padding-top: 64px;
+.container-fluid {
+    padding: 64px 0 0 0;
 }
 
 app-header{

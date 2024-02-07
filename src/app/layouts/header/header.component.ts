@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-header',
@@ -6,13 +7,21 @@ import { Component } from '@angular/core';
   styleUrl: './header.component.css',
 })
 export class HeaderComponent {
-  verifybtn: boolean = false;
+  verifybtn: boolean;
 
-  btnAllow() {
-    this.verifybtn = true;
+  constructor(private router: Router) {
+    this.verifybtn = localStorage.getItem('isLoggedIn') === 'true';
   }
 
-  btnDeny() {
+  login() {
+    localStorage.setItem('isLoggedIn', 'true');
+    this.verifybtn = true;
+    this.router.navigate(['/list']);
+  }
+
+  logout() {
+    localStorage.removeItem('isLoggedIn');
     this.verifybtn = false;
+    this.router.navigate(['/']);
   }
 }
