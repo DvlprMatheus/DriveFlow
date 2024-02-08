@@ -1,18 +1,21 @@
 package com.example.driveflow.crud.cars.service;
 
+import com.example.driveflow.crud.cars.api.exception.CarsServiceException;
 import com.example.driveflow.crud.cars.api.filters.CarsFilter;
 import com.example.driveflow.crud.cars.api.request.CreateCarsRequest;
 import com.example.driveflow.crud.cars.api.request.UpdateCarsRequest;
 import com.example.driveflow.crud.cars.api.response.CarsResponse;
 import com.example.driveflow.crud.cars.model.CarsModel;
 import com.example.driveflow.crud.cars.repository.CarsRepository;
-import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -23,8 +26,14 @@ public class CarsService {
     private CarsRepository carsRepository;
 
     public List<CarsModel> findAllCars(){
-        log.info("Displaying cars registered");
-        return carsRepository.findAll();
+        try {
+            log.info("Displaying cars registered");
+            List<CarsModel> cars = carsRepository.findAll();
+            return Collections.unmodifiableList(cars);
+        } catch (DataAccessException e) {
+            log.error("An error occurred while fetching cars from the database: {}", e.getMessage());
+            throw new CarsServiceException("An error occurred while fetching cars from the database.", e);
+        }
     }
 
     public List<CarsResponse> getCarFiltered(CarsFilter carsFilter) {
@@ -43,7 +52,7 @@ public class CarsService {
 
     public CarsModel findByIdCars(Integer id) {
         log.info("Checking if the car is registered...");
-        return carsRepository.findById(id).orElse(null);
+        return carsRepository.findById(id).orElseThrow(() -> new CarsServiceException("Car with ID " + id + " not found."));
     }
 
     public void createCars(CreateCarsRequest createCarsRequest){
@@ -64,44 +73,40 @@ public class CarsService {
         }
     }
 
-    public UpdateCarsRequest updateCars(Integer id, UpdateCarsRequest newCar) {
-        CarsModel existingCar = carsRepository.findById(id).orElse(null);
+    public void updateCars(Integer id, UpdateCarsRequest newCar) {
+        try {
+            CarsModel existingCar = carsRepository.findById(id).orElse(null);
 
-        log.info("Checking if the car is registered...");
-        if (existingCar != null) {
-            existingCar.setModel(newCar.getModel());
-            existingCar.setManufacturer(newCar.getManufacturer());
-            existingCar.setYear(newCar.getYear());
-            existingCar.setColor(newCar.getColor());
+            log.info("Checking if the car is registered...");
+            if (existingCar != null) {
+                existingCar.setModel(newCar.getModel());
+                existingCar.setManufacturer(newCar.getManufacturer());
+                existingCar.setYear(newCar.getYear());
+                existingCar.setColor(newCar.getColor());
 
-            log.info("Updating information...");
-            carsRepository.save(existingCar);
-            return newCar;
+                log.info("Updating information...");
+                carsRepository.save(existingCar);
+            } else {
+                throw new CarsServiceException("An error occurred while updating the car.");
+            }
+        } catch (Exception e) {
+            log.error("Car with id " + id + " not found.");
+            throw new CarsServiceException("Car with id " + id + " not found.", e);
         }
-
-        return null;
     }
 
-    public boolean deleteCars(Integer id) {
-        CarsModel existingCar = carsRepository.findById(id).orElse(null);
-
-        log.info("Checking if the car is registered...");
-        if (existingCar != null) {
-            log.info("Deleting information...");
-            carsRepository.deleteById(id);
-            return true;
-        }
-
-        return false;
-    }
-
-    public static class CarsServiceException extends RuntimeException {
-        public CarsServiceException(String message) {
-            super(message);
-        }
-
-        public CarsServiceException(String message, Throwable cause) {
-            super(message, cause);
+    public void deleteCars(Integer id) {
+        try {
+            Optional<CarsModel> optionalCar = carsRepository.findById(id);
+            if (optionalCar.isPresent()) {
+                log.info("Deleting information for car with ID: {}", id);
+                carsRepository.deleteById(id);
+            } else {
+                log.error("An error occurred while deleting the car with ID " + id + ".");
+                throw new CarsServiceException("Car with ID " + id + " not found.");
+            }
+        } catch (Exception e) {
+            throw new CarsServiceException("An error occurred while deleting the car with ID " + id + ".", e);
         }
     }
 }

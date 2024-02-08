@@ -1,5 +1,6 @@
 package com.example.driveflow.crud.cars.api.resource;
 
+import com.example.driveflow.crud.cars.api.exception.CarsServiceException;
 import com.example.driveflow.crud.cars.api.filters.CarsFilter;
 import com.example.driveflow.crud.cars.api.request.CreateCarsRequest;
 import com.example.driveflow.crud.cars.api.request.UpdateCarsRequest;
@@ -51,16 +52,11 @@ public class CarsResource {
 
     @CrossOrigin
     @GetMapping("/{id}")
-    public ResponseEntity<?> findByIdCars(@PathVariable Integer id) {
+    public ResponseEntity<CarsModel> findByIdCars(@PathVariable Integer id) {
         CarsModel carsModel = carsService.findByIdCars(id);
 
-            if (carsModel != null) {
-                log.info("The car was found");
-                return new ResponseEntity<>(carsModel, HttpStatus.OK);
-            } else {
-                log.error(format("The car with the ID %d was not found", id));
-                return new ResponseEntity<>("The car was not found!", HttpStatus.NOT_FOUND);
-            }
+        log.info("The car was found");
+        return new ResponseEntity<>(carsModel, HttpStatus.OK);
     }
 
     @CrossOrigin
@@ -74,37 +70,37 @@ public class CarsResource {
     @CrossOrigin
     @PutMapping("/update/{id}")
     public ResponseEntity<String> updateCars(@PathVariable Integer id, @Valid @RequestBody UpdateCarsRequest newCar) throws ChangeSetPersister.NotFoundException {
-        UpdateCarsRequest updatedCar = carsService.updateCars(id, newCar);
-
-        if (updatedCar != null){
+            carsService.updateCars(id, newCar);
             log.info("The car updated successfully!");
-            return new ResponseEntity<>("The car updated successfully!", HttpStatus.CREATED);
-        } else {
-            log.error(format("The car with the ID %d was not found", id));
-            return new ResponseEntity<>("The car was not found!", HttpStatus.NOT_FOUND);
-        }
+            return new ResponseEntity<>("The car updated successfully!", HttpStatus.OK);
     }
 
     @CrossOrigin
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> deleteCars(@PathVariable Integer id){
-        boolean verify = carsService.deleteCars(id);
+        carsService.deleteCars(id);
 
-        if (verify){
-            log.info("The car deleted successfully!");
-            return new ResponseEntity<>("The car deleted successfully!", HttpStatus.OK);
-        } else {
-            log.error(format("The car with the ID %d was not found", id));
-            return new ResponseEntity<>("The car was not found!", HttpStatus.NOT_FOUND);
+        log.info("The car deleted successfully!");
+        return new ResponseEntity<>("The car deleted successfully!", HttpStatus.OK);
+
+    }
+
+    @RestControllerAdvice
+    public static class ValidationExceptionHandler {
+        @ExceptionHandler(MethodArgumentNotValidException.class)
+        public ResponseEntity<String> handleValidationException(MethodArgumentNotValidException e) {
+            String errorMessage = Objects.requireNonNull(e.getBindingResult().getFieldError()).getDefaultMessage();
+            log.error(errorMessage);
+            return ResponseEntity.badRequest().body(errorMessage);
         }
     }
 
     @RestControllerAdvice
-    public static class GlobalExceptionHandler {
-        @ExceptionHandler(MethodArgumentNotValidException.class)
-        public ResponseEntity<String> handleValidationException(MethodArgumentNotValidException e) {
-            String errorMessage = Objects.requireNonNull(e.getBindingResult().getFieldError()).getDefaultMessage();
-            return ResponseEntity.badRequest().body(errorMessage);
+    public static class ServiceExceptionHandler {
+
+        @ExceptionHandler(CarsServiceException.class)
+        public ResponseEntity<String> handleCarsServiceException(CarsServiceException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
 }
