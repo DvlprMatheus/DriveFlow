@@ -12,6 +12,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 
 import { AppRoutingModule } from './app-routing.module';
@@ -28,6 +29,8 @@ import { EditComponent } from './pages/edit/edit.component';
 import { DialogCreateComponent } from './shared/dialog-create/dialog-create.component';
 import { DialogEditComponent } from './shared/dialog-edit/dialog-edit.component';
 import { DialogConfirmComponent } from './shared/dialog-confirm/dialog-confirm.component';
+import { MessageCreateComponent } from './shared/message-create/message-create.component';
+import { MessageEditComponent } from './shared/message-edit/message-edit.component';
 
 
 @NgModule({
@@ -42,7 +45,9 @@ import { DialogConfirmComponent } from './shared/dialog-confirm/dialog-confirm.c
     EditComponent,
     DialogCreateComponent,
     DialogEditComponent,
-    DialogConfirmComponent
+    DialogConfirmComponent,
+    MessageCreateComponent,
+    MessageEditComponent
   ],
   imports: [
     BrowserModule,
@@ -57,8 +62,9 @@ import { DialogConfirmComponent } from './shared/dialog-confirm/dialog-confirm.c
     MatPaginatorModule,
     MatMenuModule,
     MatDialogModule,
+    MatSnackBarModule,
     HttpClientModule,
-    ReactiveFormsModule,
+    ReactiveFormsModule
   ],
   providers: [
     provideAnimationsAsync()

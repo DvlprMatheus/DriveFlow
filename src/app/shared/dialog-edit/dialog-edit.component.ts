@@ -5,8 +5,10 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { manufacturers } from '../../data/manufacturers-data';
 
 import { ICar } from '../../models/icar';
+import { MessageEditComponent } from '../../shared/message-edit/message-edit.component';
 
 import { CarsService } from '../../services/cars.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-dialog-edit',
@@ -23,6 +25,7 @@ export class DialogEditComponent implements OnInit {
     private formBuilder: FormBuilder,
     private carsService: CarsService,
     private dialogRef: MatDialogRef<DialogEditComponent>,
+    private matSnackBar: MatSnackBar,
     @Inject(MAT_DIALOG_DATA) public car: ICar
     ) {
       this.dialog = this.formBuilder.group({
@@ -44,6 +47,13 @@ export class DialogEditComponent implements OnInit {
 
   onSubmit(){
     this.carsService.updateCars(this.car.id!, this.dialog.value).subscribe();
+    this.openSnackBar();
     this.dialogRef.close(true);
+  }
+
+  openSnackBar() {
+    this.matSnackBar.openFromComponent(MessageEditComponent, {
+      duration: 5000,
+    });
   }
 }

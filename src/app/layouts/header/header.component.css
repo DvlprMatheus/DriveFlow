@@ -10,3 +10,17 @@ img {
 .example-spacer {
     flex: 1 1 auto;
 }
+
+@media screen and (max-width: 600px) {
+    mat-toolbar {
+        width: 100%;
+    }
+
+    img {
+        width: 150px;
+    }
+
+    .example-spacer {
+        flex: 1 1 auto;
+    }
+}

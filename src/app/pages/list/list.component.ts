@@ -1,9 +1,8 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { manufacturers } from '../../data/manufacturers-data';
 
-import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 
@@ -30,8 +29,6 @@ export class ListComponent implements OnInit{
     cars!: MatTableDataSource<ICar>;
     displayedColumns = ['id', 'model', 'manufacturer', 'year', 'color', 'actions'];
 
-    @ViewChild(MatPaginator) paginator!: MatPaginator;
-
     constructor(
       private carsService: CarsService,
       private matDialog: MatDialog,
@@ -55,7 +52,6 @@ export class ListComponent implements OnInit{
       this.carsService.findAllCars().subscribe((items) => {
       this.listCars = items;
       this.cars = new MatTableDataSource<ICar>(this.listCars);
-      setTimeout(() => {this.cars.paginator = this.paginator}, 100)
       });
     }
 
@@ -64,7 +60,6 @@ export class ListComponent implements OnInit{
       this.carsService.getCarFiltered(filterValues).subscribe(result => {
         this.listCars = result;
         this.cars = new MatTableDataSource<ICar>(this.listCars);
-        this.cars.paginator = this.paginator;
       });
     }
 

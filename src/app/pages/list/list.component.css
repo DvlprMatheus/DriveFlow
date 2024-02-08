@@ -11,33 +11,13 @@
 
 /* Table */
 
-.list-table {
-    display: flex;
-    justify-content: center;
-    margin-top: 2em;
-}
-
-.mat-elevation-z8 {
-    width: 100%;
-}
-
-.colunm-actions {
-    display: flex;
-    justify-content: center;
-    padding: 1.2em;
-}
-
-.line-actions {
-    display: flex;
-    padding: 0.5em;
-    justify-content: center;    
-}
-
 .empty-table {
     display: flex;
     align-items: center;
+    justify-content: center;
     text-align: center;
     height: 32vh;
     font-size: 16px;
     color: #888;
 }
+
