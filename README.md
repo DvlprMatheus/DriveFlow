@@ -1,27 +1,27 @@
-# Driveflow
+# DriveFlow
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.1.2.
+Bem-vindo ao repositório do DriveFlow, um sistema completo para o cadastro e gerenciamento de carros. Aqui você encontrará o código-fonte para o front-end desenvolvido em Angular. Ele oferece uma solução robusta e eficiente para o controle de veículos, proporcionando uma experiência intuitiva e fácil de usar tanto para usuários finais quanto para administradores.
 
-## Development server
+## Sumário
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+- [Como Usar](#como-usar)
+- [Funcionalidades](#funcionalidades)
+- [Tecnologias](#tecnologias)
+- [Licença](#licença)
 
-## Code scaffolding
+## Como Usar
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+Após realizar o **$git clone** ou **download em .zip**, abra em sua IDE e faça as instalações de suas dependências necessárias. Começando pelo `npm install`, que irá baixar a node_modules em seu projeto. Por fim, utilize `ng serve` para que você possa desfrutar da aplicação.
 
-## Build
+<i> Obs: Lembrando que precisa ter a API rodando na sua máquina para que as funcionalidades deem certo. Neste repositório mesmo repositório, na branch back-end, você pode acompanhar como iniciá-la. </i>
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+## Funcionalidades
 
-## Running unit tests
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
 
-## Running end-to-end tests
+## Tecnologias
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+![Tecnologias](https://skillicons.dev/icons?i=angular,typescript)
 
-## Further help
+## Licença
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
