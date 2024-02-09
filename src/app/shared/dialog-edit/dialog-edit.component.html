@@ -6,7 +6,7 @@
         <form class="dialog-form" [formGroup]="dialog">
             <mat-form-field class="dialog-input">
                 <mat-label>Modelo</mat-label>
-                <input matInput placeholder="Ex. Kar" formControlName="model" required>
+                <input matInput placeholder="Ex. Ka" formControlName="model" required>
                 <mat-error *ngIf="dialog.get('model')?.hasError('required')">Modelo é obrigatório</mat-error>
             </mat-form-field>
         

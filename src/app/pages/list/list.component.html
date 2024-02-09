@@ -11,12 +11,13 @@
                     <mat-menu #create="matMenu">
                         <button mat-menu-item routerLink="/list/create">Formulário</button>
                         <button mat-menu-item (click)="openCreateDialog()">Diálogo</button>
+                        <button mat-menu-item (click)="addNewCar()">Tabela</button>
                     </mat-menu>
             </div>
         </mat-card-header>
 
-        <mat-card-content class="list-filters" [formGroup]="filter">
-            <form class="default-forms">
+        <mat-card-content class="list-filters">
+            <form class="default-forms" [formGroup]="filter">
           
                 <mat-form-field class="forms-input">
                     <mat-label>Modelo</mat-label>
@@ -68,22 +69,126 @@
                     <tbody>
                         <tr *ngFor="let car of listCars">
                             <td>{{ car.id }}</td>
-                            <td>{{ car.model }}</td>
-                            <td>{{ car.manufacturer }}</td>
-                            <td>{{ car.year }}</td>
-                            <td>{{ car.color }}</td>
+                            <td>
+                                <ng-container *ngIf="!isEditing || editingCarId !== car.id; else editModel">
+                                    {{ car.model }}
+                                </ng-container>
+                                <ng-template #editModel>
+                                    <mat-form-field class="table-input" [formGroup]="updateCarsTable">
+                                        <input matInput [(ngModel)]="car.model" placeholder="Ex. Lancer" formControlName="model" required>
+                                        <mat-error *ngIf="updateCarsTable.get('model')?.hasError('required')">Modelo é obrigatório</mat-error>
+                                    </mat-form-field>
+                                </ng-template>
+                            </td>
+                            <td>
+                                <ng-container *ngIf="!isEditing || editingCarId !== car.id; else editManufacturer">
+                                    {{ car.manufacturer }}
+                                </ng-container>
+                                <ng-template #editManufacturer>
+                                    <mat-form-field class="table-input" [formGroup]="updateCarsTable">
+                                        <mat-label>Fabricante</mat-label>
+                                        <mat-select [(ngModel)]="car.manufacturer" formControlName="manufacturer" required>
+                                        <mat-option>--</mat-option>
+                                            @for (manufacturer of manufacturers; track manufacturer) {
+                                            <mat-option [value]="manufacturer.name">{{ manufacturer.name }}</mat-option>
+                                        }
+                                        </mat-select>
+                                        <mat-error *ngIf="updateCarsTable.get('manufacturer')?.hasError('required')">Fabricante é obrigatório</mat-error>
+                                    </mat-form-field>
+                                </ng-template>
+                            </td>
+                            <td>
+                                <ng-container *ngIf="!isEditing || editingCarId !== car.id; else editYear">
+                                    {{ car.year }}
+                                </ng-container>
+                                <ng-template #editYear>
+                                    <mat-form-field class="table-input" [formGroup]="updateCarsTable">
+                                        <input matInput [(ngModel)]="car.year" placeholder="Ex. 2014" formControlName="year" required>
+                                        <mat-error *ngIf="updateCarsTable.get('year')?.hasError('required')">Ano é obrigatório</mat-error>
+                                        <mat-error *ngIf="updateCarsTable.get('year')?.hasError('pattern')">Formato de ano inválido</mat-error>
+                                    </mat-form-field>
+                                </ng-template>
+                            </td>
+                            <td>
+                                <ng-container *ngIf="!isEditing || editingCarId !== car.id; else editColor">
+                                    {{ car.color }}
+                                </ng-container>
+                                <ng-template #editColor>
+                                    <mat-form-field class="table-input" [formGroup]="updateCarsTable">
+                                        <input matInput [(ngModel)]="car.color" placeholder="Ex. Prata" formControlName="color" required>
+                                        <mat-error *ngIf="updateCarsTable.get('color')?.hasError('required')">Cor é obrigatório</mat-error>
+                                    </mat-form-field>
+                                </ng-template>
+                            </td>
                             <td>
                                 <div class="d-flex justify-content-center">
-                                    <button mat-icon-button [matMenuTriggerFor]="edit">
-                                        <mat-icon>create</mat-icon>
+                                    <ng-container *ngIf="!isEditing || editingCarId !== car.id; else editActions">
+                                        <button mat-icon-button [matMenuTriggerFor]="edit">
+                                            <mat-icon>create</mat-icon>
+                                        </button>
+                                        <mat-menu #edit="matMenu">
+                                            <button mat-menu-item (click)="onEdit(car)">Formulário</button>
+                                            <button mat-menu-item (click)="openEditDialog(car)">Diálogo</button>
+                                            <button mat-menu-item (click)="enableEditingMode(car.id!)">Tabela</button>
+                                        </mat-menu>
+                                        <button mat-icon-button (click)="onDelete(car)">
+                                            <mat-icon>delete</mat-icon>
+                                        </button>
+                                    </ng-container>
+                                    <ng-template #editActions>
+                                        <button mat-icon-button (click)="saveEditedCar(car)" [disabled]="updateCarsTable.invalid">
+                                            <mat-icon>save</mat-icon>
+                                        </button>
+                                        <button mat-icon-button (click)="cancelEdit()">
+                                            <mat-icon>cancel</mat-icon>
+                                        </button>
+                                    </ng-template>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr *ngIf="isNewCarAdding">
+                            <td>-</td>
+                            <td>
+                                <mat-form-field class="table-input" [formGroup]="createCarsTable">
+                                    <mat-label>Modelo</mat-label>
+                                    <input matInput placeholder="Ex. Lancer" [(ngModel)]="newCar.model" formControlName="model" required>
+                                    <mat-error *ngIf="createCarsTable.get('model')?.hasError('required')">Modelo é obrigatório</mat-error>
+                                </mat-form-field>
+                            </td>
+                            <td>
+                                <mat-form-field class="table-input" [formGroup]="createCarsTable">
+                                    <mat-label>Fabricante</mat-label>
+                                    <mat-select [(ngModel)]="newCar.manufacturer" formControlName="manufacturer" required>
+                                    <mat-option>--</mat-option>
+                                        @for (manufacturer of manufacturers; track manufacturer) {
+                                        <mat-option [value]="manufacturer.name">{{ manufacturer.name }}</mat-option>
+                                    }
+                                    </mat-select>
+                                    <mat-error *ngIf="createCarsTable.get('manufacturer')?.hasError('required')">Fabricante é obrigatório</mat-error>
+                                </mat-form-field>
+                            </td>
+                            <td>
+                                <mat-form-field class="table-input" [formGroup]="createCarsTable">
+                                    <mat-label>Ano</mat-label>
+                                    <input matInput placeholder="Ex. 2014" [(ngModel)]="newCar.year" formControlName="year" required>
+                                    <mat-error *ngIf="createCarsTable.get('year')?.hasError('required')">Ano é obrigatório</mat-error>
+                                    <mat-error *ngIf="createCarsTable.get('year')?.hasError('pattern')">Formato de ano inválido</mat-error>
+                                </mat-form-field>
+                            </td>
+                            <td>
+                                <mat-form-field class="table-input" [formGroup]="createCarsTable">
+                                    <mat-label>Cor</mat-label>
+                                    <input matInput placeholder="Ex. Prata" [(ngModel)]="newCar.color" formControlName="color" required>
+                                    <mat-error *ngIf="createCarsTable.get('color')?.hasError('required')">Cor é obrigatório</mat-error>
+                                </mat-form-field>
+                            </td>
+                            <td>
+                                <div class="d-flex justify-content-center">
+                                    <button mat-icon-button (click)="saveNewCar()" [disabled]="createCarsTable.invalid">
+                                        <mat-icon>save</mat-icon>
                                     </button>
-                                    <mat-menu #edit="matMenu">
-                                        <button mat-menu-item (click)="onEdit(car)">Formulário</button>
-                                        <button mat-menu-item (click)="openEditDialog(car)">Diálogo</button>
-                                        <button mat-menu-item>Tabela</button>
-                                    </mat-menu>
-                                    <button mat-icon-button (click)="onDelete(car)">
-                                        <mat-icon>delete</mat-icon>
+                                    <button mat-icon-button (click)="cancelNewCar()">
+                                        <mat-icon>cancel</mat-icon>
                                     </button>
                                 </div>
                             </td>
