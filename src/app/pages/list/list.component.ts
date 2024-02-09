@@ -8,10 +8,13 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 
 import { DialogCreateComponent } from '../../shared/dialog-create/dialog-create.component';
 import { DialogEditComponent } from '../../shared/dialog-edit/dialog-edit.component';
+import { MessageCreateComponent } from '../../shared/message-create/message-create.component';
+import { MessageEditComponent } from '../../shared/message-edit/message-edit.component';
 
 import { CarsService } from '../../services/cars.service';
 
 import { ICar } from '../../models/icar';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-list',
@@ -52,7 +55,8 @@ export class ListComponent implements OnInit{
       private matDialog: MatDialog,
       private formBuilder: FormBuilder,
       private router: Router,
-      private route: ActivatedRoute
+      private route: ActivatedRoute,
+      private matSnackBar: MatSnackBar
       ) { 
         this.filter = this.formBuilder.group({
           model: [''],
@@ -79,7 +83,6 @@ export class ListComponent implements OnInit{
     ngOnInit(): void {
       this.loadCars()
     }
-
 
     // Table Update
 
@@ -112,7 +115,7 @@ export class ListComponent implements OnInit{
 
       dialogCreateRef.afterClosed().subscribe(result => {
         if (result) {
-          setTimeout(() => {this.loadCars()}, 100)
+          setTimeout(() => {this.loadCars()}, 200)
         }
       });
     }
@@ -150,7 +153,7 @@ export class ListComponent implements OnInit{
 
     saveNewCar() {
       this.carsService.createCars(this.newCar).subscribe();
-      setTimeout(() => {this.resetNewCar(), this.loadCars()}, 100)
+      setTimeout(() => {this.resetNewCar(), this.loadCars(), this.createSnackBar()}, 200)
     }
 
     cancelNewCar() {
@@ -168,6 +171,8 @@ export class ListComponent implements OnInit{
       };
     }
 
+    // Table Edit
+
     cancelEdit() {
       this.isEditing = false;
       this.editingCarId = null;
@@ -181,6 +186,20 @@ export class ListComponent implements OnInit{
 
     saveEditedCar(car: ICar) {
       this.carsService.updateCars(car.id!, car).subscribe();
-      setTimeout(() => {this.isEditing = false, this.editingCarId = null, this.loadCars()}, 100)
+      setTimeout(() => {this.isEditing = false, this.editingCarId = null, this.loadCars(), this.editSnackBar()}, 100)
+    }
+
+    // Snackbars
+
+    createSnackBar() {
+      this.matSnackBar.openFromComponent(MessageCreateComponent, {
+        duration: 5000,
+      });
+    }
+
+    editSnackBar() {
+      this.matSnackBar.openFromComponent(MessageEditComponent, {
+        duration: 5000,
+      });
     }
   }

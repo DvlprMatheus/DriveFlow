@@ -34,14 +34,13 @@ export class DialogCreateComponent {
 
   async onSubmit(){
     await this.carsService.createCars(this.dialog.value).subscribe();
-    this.openSnackBar("Carro registrado com sucesso!");
+    this.openSnackBar();
     this.dialogRef.close(true);
   }
 
-  openSnackBar(message: string) {
+  openSnackBar() {
     this.matSnackBar.openFromComponent(MessageCreateComponent, {
       duration: 5000,
-      data: { messageText: message }
     });
   }
 }
