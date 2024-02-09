@@ -10,7 +10,6 @@ import com.example.driveflow.crud.cars.service.CarsService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -18,8 +17,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Objects;
-
-import static java.lang.String.format;
 
 @RestController
 @RequestMapping("/cars")
@@ -31,8 +28,8 @@ public class CarsResource {
     @CrossOrigin
     @GetMapping("/all")
     public ResponseEntity<List<CarsModel>> findAllCars(){
-       log.info("Looking for registered cars...");
-       return ResponseEntity.ok(carsService.findAllCars());
+        log.info("Looking for registered cars...");
+        return ResponseEntity.ok(carsService.findAllCars());
     }
 
     @CrossOrigin
@@ -61,18 +58,18 @@ public class CarsResource {
 
     @CrossOrigin
     @PostMapping("/create")
-    public ResponseEntity<String> createCars(@Valid @RequestBody CreateCarsRequest createCarsRequest){
+    public ResponseEntity<CarsModel> createCars(@Valid @RequestBody CreateCarsRequest createCarsRequest){
         log.info("Registering the car...");
-        carsService.createCars(createCarsRequest);
-        return new ResponseEntity<>("The car successfully registered!", HttpStatus.CREATED);
+        CarsModel carsModel = carsService.createCars(createCarsRequest);
+        return new ResponseEntity<>(carsModel, HttpStatus.CREATED);
     }
 
     @CrossOrigin
     @PutMapping("/update/{id}")
-    public ResponseEntity<String> updateCars(@PathVariable Integer id, @Valid @RequestBody UpdateCarsRequest newCar) throws ChangeSetPersister.NotFoundException {
-            carsService.updateCars(id, newCar);
+    public ResponseEntity<CarsModel> updateCars(@PathVariable Integer id, @Valid @RequestBody UpdateCarsRequest newCar) {
+            CarsModel carsModel = carsService.updateCars(id, newCar);
             log.info("The car updated successfully!");
-            return new ResponseEntity<>("The car updated successfully!", HttpStatus.OK);
+            return new ResponseEntity<>(carsModel, HttpStatus.OK);
     }
 
     @CrossOrigin

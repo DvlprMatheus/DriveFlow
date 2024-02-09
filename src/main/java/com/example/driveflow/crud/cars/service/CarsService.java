@@ -55,7 +55,7 @@ public class CarsService {
         return carsRepository.findById(id).orElseThrow(() -> new CarsServiceException("Car with ID " + id + " not found."));
     }
 
-    public void createCars(CreateCarsRequest createCarsRequest){
+    public CarsModel createCars(CreateCarsRequest createCarsRequest){
         try {
             CarsModel carsModel = new CarsModel();
 
@@ -67,13 +67,14 @@ public class CarsService {
 
             log.info("The car successfully registered!");
             carsRepository.save(carsModel);
+            return carsModel;
         } catch (Exception ex) {
             log.error("An error occurred while registering the car", ex);
             throw new CarsServiceException("Error registering the car: " + ex.getMessage(), ex);
         }
     }
 
-    public void updateCars(Integer id, UpdateCarsRequest newCar) {
+    public CarsModel updateCars(Integer id, UpdateCarsRequest newCar) {
         try {
             CarsModel existingCar = carsRepository.findById(id).orElse(null);
 
@@ -86,6 +87,7 @@ public class CarsService {
 
                 log.info("Updating information...");
                 carsRepository.save(existingCar);
+                return existingCar;
             } else {
                 throw new CarsServiceException("An error occurred while updating the car.");
             }

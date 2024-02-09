@@ -1,11 +1,15 @@
 package com.example.driveflow.crud.cars.repository;
 
 import com.example.driveflow.crud.cars.model.CarsModel;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
+import java.util.List;
+
 public interface CarsRepository extends JpaRepository<CarsModel, Integer>, JpaSpecificationExecutor<CarsModel> {
+
     interface Specs {
         static Specification<CarsModel> byModel(String model) {
             if(model != null) {
