@@ -1,11 +1,27 @@
-.home-content {
-    display: flex;
+.container {
     width: 100%;
     height: 95vh;
 }
 
-.home-content img {
-    width: 100vw;
-    height: 95vh;
-    object-fit: cover;
+.home-title h1, p, button {
+    font-family: 'Poppins';
+}
+
+.home-title h1 {
+    font-size: 40px;
+    font-weight: bold;
+    line-height: 1.2;
+}
+
+.home-title p {
+    font-size: 20px;
+    line-height: 1.2;
+}
+
+.home-buttons button{
+    margin: 1em 1em 0 0;
+}
+
+.home-image {
+    margin: 5em 0;
 }
