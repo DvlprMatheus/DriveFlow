@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
+import { ReactiveFormsModule } from '@angular/forms';
 
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
@@ -16,8 +17,6 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 
 import { AppRoutingModule } from './app-routing.module';
-import { ReactiveFormsModule } from '@angular/forms';
-import { FormsModule } from '@angular/forms';
 import { AppComponent } from './app.component';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { HeaderComponent } from './layouts/header/header.component';
@@ -32,6 +31,7 @@ import { DialogEditComponent } from './shared/dialog-edit/dialog-edit.component'
 import { DialogConfirmComponent } from './shared/dialog-confirm/dialog-confirm.component';
 import { MessageCreateComponent } from './shared/message-create/message-create.component';
 import { MessageEditComponent } from './shared/message-edit/message-edit.component';
+import { MessageDeleteComponent } from './shared/message-delete/message-delete.component';
 
 
 @NgModule({
@@ -48,7 +48,8 @@ import { MessageEditComponent } from './shared/message-edit/message-edit.compone
     DialogEditComponent,
     DialogConfirmComponent,
     MessageCreateComponent,
-    MessageEditComponent
+    MessageEditComponent,
+    MessageDeleteComponent
   ],
   imports: [
     BrowserModule,
@@ -65,8 +66,7 @@ import { MessageEditComponent } from './shared/message-edit/message-edit.compone
     MatDialogModule,
     MatSnackBarModule,
     HttpClientModule,
-    ReactiveFormsModule,
-    FormsModule
+    ReactiveFormsModule
   ],
   providers: [
     provideAnimationsAsync()

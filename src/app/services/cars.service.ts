@@ -3,6 +3,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 import { ICar } from '../models/icar';
+import { ICarPage } from '../models/icar-page';
 
 import { environment } from '../../environments/environment';
 
@@ -19,8 +20,9 @@ export class CarsService {
 
   // Listar todos os carros registrados.
 
-  findAllCars(): Observable<ICar[]> {
-    return this.httpClient.get<ICar[]>(`${this.apiUrl}/all`);
+  findAllCars(page = 0, size = 10): Observable<ICarPage> {
+    const params = `?page=${page}&size=${size}`;
+    return this.httpClient.get<ICarPage>(`${this.apiUrl}/all${params}`);
   }
 
   // Encontra um carro pelo Id.

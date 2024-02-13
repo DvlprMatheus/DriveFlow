@@ -1,20 +1,22 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { manufacturers } from '../../data/manufacturers-data';
 
 import { MatTableDataSource } from '@angular/material/table';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { DialogCreateComponent } from '../../shared/dialog-create/dialog-create.component';
 import { DialogEditComponent } from '../../shared/dialog-edit/dialog-edit.component';
 import { MessageCreateComponent } from '../../shared/message-create/message-create.component';
 import { MessageEditComponent } from '../../shared/message-edit/message-edit.component';
+import { MessageDeleteComponent } from '../../shared/message-delete/message-delete.component';
 
 import { CarsService } from '../../services/cars.service';
 
 import { ICar } from '../../models/icar';
-import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-list',
@@ -26,29 +28,22 @@ export class ListComponent implements OnInit{
     manufacturers = manufacturers;
 
     filter: FormGroup;
-
     createCarsTable: FormGroup;
-
     updateCarsTable: FormGroup;
 
-    listCars: ICar[] = [];
-
     isNewCarAdding: boolean = false;
-
     isEditing: boolean = false;
-
     editingCarId: number | null = null;
-    
-    newCar: ICar = {
-        id: null,
-        model: '',
-        manufacturer: '',
-        year: null,
-        color: ''
-    };
 
     cars!: MatTableDataSource<ICar>;
     displayedColumns = ['id', 'model', 'manufacturer', 'year', 'color', 'actions'];
+
+    @ViewChild(MatPaginator) paginator!: MatPaginator;
+    
+    listCars: ICar[] = [];
+    totalElements!: number;
+    pageIndex!: number;
+    pageSize!: number;
 
     constructor(
       private carsService: CarsService,
@@ -56,7 +51,7 @@ export class ListComponent implements OnInit{
       private formBuilder: FormBuilder,
       private router: Router,
       private route: ActivatedRoute,
-      private matSnackBar: MatSnackBar
+      private matSnackBar: MatSnackBar,
       ) { 
         this.filter = this.formBuilder.group({
           model: [''],
@@ -84,12 +79,17 @@ export class ListComponent implements OnInit{
       this.loadCars()
     }
 
-    // Table Update
+    // Table Load
 
-    loadCars() {
-      this.carsService.findAllCars().subscribe((items) => {
-      this.listCars = items;
+    loadCars(pageEvent: PageEvent = {length: 0, pageIndex: 0, pageSize: 10}) {
+      this.carsService.findAllCars(pageEvent.pageIndex, pageEvent.pageSize).subscribe((carPage) => {
+      this.listCars = carPage.content;
+      this.totalElements = carPage.totalElements;
       this.cars = new MatTableDataSource<ICar>(this.listCars);
+
+      this.paginator.length = this.totalElements;
+      this.paginator.pageIndex = pageEvent.pageIndex;
+      this.paginator.pageSize = pageEvent.pageSize;
       });
     }
 
@@ -142,7 +142,7 @@ export class ListComponent implements OnInit{
 
     onDelete(car: ICar) {
       this.carsService.deleteCars(car.id!).subscribe();
-      setTimeout(() => {this.loadCars()}, 100)
+      setTimeout(() => {this.loadCars(), this.deleteSnackBar()}, 200)
     }
 
     // Table Create
@@ -151,8 +151,8 @@ export class ListComponent implements OnInit{
       this.isNewCarAdding = true;
     }
 
-    saveNewCar() {
-      this.carsService.createCars(this.newCar).subscribe();
+    saveNewCar(car: ICar) {
+      this.carsService.createCars(car).subscribe();
       setTimeout(() => {this.resetNewCar(), this.loadCars(), this.createSnackBar()}, 200)
     }
 
@@ -162,13 +162,7 @@ export class ListComponent implements OnInit{
 
     resetNewCar() {
       this.isNewCarAdding = false;
-      this.newCar = {
-          id: null,
-          model: '',
-          manufacturer: '',
-          year: null,
-          color: ''
-      };
+      this.createCarsTable.reset();
     }
 
     // Table Edit
@@ -182,11 +176,20 @@ export class ListComponent implements OnInit{
     enableEditingMode(id: number) {
       this.isEditing = true;
       this.editingCarId = id;
+
+      const editedCar = this.listCars.find(car => car.id === id);
+
+      this.updateCarsTable.setValue({
+        model: editedCar!.model,
+        manufacturer: editedCar!.manufacturer,
+        year: editedCar!.year,
+        color: editedCar!.color
+      })
     }
 
-    saveEditedCar(car: ICar) {
-      this.carsService.updateCars(car.id!, car).subscribe();
-      setTimeout(() => {this.isEditing = false, this.editingCarId = null, this.loadCars(), this.editSnackBar()}, 100)
+    saveEditedCar(id: number, car: ICar) {
+      this.carsService.updateCars(id, car).subscribe();
+      setTimeout(() => {this.isEditing = false, this.editingCarId = null, this.loadCars(), this.editSnackBar()}, 200)
     }
 
     // Snackbars
@@ -199,6 +202,12 @@ export class ListComponent implements OnInit{
 
     editSnackBar() {
       this.matSnackBar.openFromComponent(MessageEditComponent, {
+        duration: 5000,
+      });
+    }
+
+    deleteSnackBar() {
+      this.matSnackBar.openFromComponent(MessageDeleteComponent, {
         duration: 5000,
       });
     }
