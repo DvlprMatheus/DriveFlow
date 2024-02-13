@@ -9,6 +9,10 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,13 +39,17 @@ public class CarsServiceTest {
 
     @Test
     void findAllCarsTest() {
-        List<CarsModel> cars = new ArrayList<>();;
-        when(carsRepository.findAll()).thenReturn(cars);
+        List<CarsModel> cars = new ArrayList<>();
+        cars.add(carsModel);
 
-        List<CarsModel> result = carsRepository.findAll();
+        Pageable pageable = PageRequest.of(0, 10);
+        Page<CarsModel> carsPage = new PageImpl<>(cars, pageable, cars.size());
+        when(carsRepository.findAll(pageable)).thenReturn(carsPage);
 
-        assertEquals(cars, result);
-        verify(carsRepository).findAll();
+        Page<CarsModel> result = carsService.findAllCars(0, 10);
+
+        assertEquals(carsPage, result);
+        verify(carsRepository).findAll(pageable);
         verifyNoMoreInteractions(carsRepository);
     }
 
@@ -89,6 +97,4 @@ public class CarsServiceTest {
 
         verify(carsRepository).deleteById(carsModel.getId());
     }
-
-
 }

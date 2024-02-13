@@ -10,6 +10,7 @@ import com.example.driveflow.crud.cars.service.CarsService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -27,9 +28,10 @@ public class CarsResource {
 
     @CrossOrigin
     @GetMapping("/all")
-    public ResponseEntity<List<CarsModel>> findAllCars(){
+    public ResponseEntity<Page<CarsModel>> findAllCars(@RequestParam(defaultValue = "0") int page,
+                                                       @RequestParam(defaultValue = "10") int size) {
         log.info("Looking for registered cars...");
-        return ResponseEntity.ok(carsService.findAllCars());
+        return ResponseEntity.ok(carsService.findAllCars(page, size));
     }
 
     @CrossOrigin
@@ -94,7 +96,6 @@ public class CarsResource {
 
     @RestControllerAdvice
     public static class ServiceExceptionHandler {
-
         @ExceptionHandler(CarsServiceException.class)
         public ResponseEntity<String> handleCarsServiceException(CarsServiceException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());

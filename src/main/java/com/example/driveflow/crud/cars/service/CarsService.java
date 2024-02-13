@@ -7,33 +7,33 @@ import com.example.driveflow.crud.cars.api.request.UpdateCarsRequest;
 import com.example.driveflow.crud.cars.api.response.CarsResponse;
 import com.example.driveflow.crud.cars.model.CarsModel;
 import com.example.driveflow.crud.cars.repository.CarsRepository;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@Validated
 @Slf4j
 public class CarsService {
 
     @Autowired
     private CarsRepository carsRepository;
 
-    public List<CarsModel> findAllCars(){
-        try {
-            log.info("Displaying cars registered");
-            List<CarsModel> cars = carsRepository.findAll();
-            return Collections.unmodifiableList(cars);
-        } catch (DataAccessException e) {
-            log.error("An error occurred while fetching cars from the database: {}", e.getMessage());
-            throw new CarsServiceException("An error occurred while fetching cars from the database.", e);
-        }
+    public Page<CarsModel> findAllCars(@PositiveOrZero int page,
+                                       @Positive @Max(10) int size) {
+        log.info("Displaying cars registered");
+        return carsRepository.findAll(PageRequest.of(page, size));
     }
 
     public List<CarsResponse> getCarFiltered(CarsFilter carsFilter) {
