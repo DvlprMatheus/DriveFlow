@@ -17,7 +17,11 @@ Após realizar o **$git clone** ou **download em .zip**, abra em sua IDE e faça
 
 ## Funcionalidades
 
-
+- Listar: O importante é saber quantos veículos já estão presente dentro do sistema, com isso temos uma tabela que controla a quantidade dos carros existentes e os que serão registrados.
+- Cadastro: Para poder registrar os veículos, foi disponibilizado três métodos, através de formulário, diálogo ou diretamente na tabela. Com isso, o usuário terá uma maior liberdade de escolha em seu gerenciamento.
+- Edição: Assim como o cadastro, o usuário também poderá editar as informações dos veículos registrados através das três formas.
+- Deletar: Caso não deseje mais ter um veículo registrado, basta deletá-lo no campo de ações de cada linha da tabela.
+- Filtrar: Se deseja consultar um modelo, fabricante, ano, cor ou veículo específico, basta utilizar os filtros no início do sistema. 
 
 ## Tecnologias
 
@@ -25,3 +29,4 @@ Após realizar o **$git clone** ou **download em .zip**, abra em sua IDE e faça
 
 ## Licença
 
+MIT License que permite que o software seja tratato sem restrições para o uso, modificação e distribuição.
