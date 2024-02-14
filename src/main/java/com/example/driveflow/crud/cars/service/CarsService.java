@@ -7,6 +7,7 @@ import com.example.driveflow.crud.cars.api.request.UpdateCarsRequest;
 import com.example.driveflow.crud.cars.api.response.CarsResponse;
 import com.example.driveflow.crud.cars.model.CarsModel;
 import com.example.driveflow.crud.cars.repository.CarsRepository;
+import com.example.driveflow.crud.cars.utils.StringUtils;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
@@ -60,10 +61,10 @@ public class CarsService {
             CarsModel carsModel = new CarsModel();
 
             log.info("Allocating all the information...");
-            carsModel.setModel(createCarsRequest.getModel());
+            carsModel.setModel(StringUtils.firstLetter(createCarsRequest.getModel()));
             carsModel.setManufacturer(createCarsRequest.getManufacturer());
             carsModel.setYear(createCarsRequest.getYear());
-            carsModel.setColor(createCarsRequest.getColor());
+            carsModel.setColor(StringUtils.firstLetter(createCarsRequest.getColor()));
 
             log.info("The car successfully registered!");
             carsRepository.save(carsModel);
@@ -80,10 +81,10 @@ public class CarsService {
 
             log.info("Checking if the car is registered...");
             if (existingCar != null) {
-                existingCar.setModel(newCar.getModel());
+                existingCar.setModel(StringUtils.firstLetter(newCar.getModel()));
                 existingCar.setManufacturer(newCar.getManufacturer());
                 existingCar.setYear(newCar.getYear());
-                existingCar.setColor(newCar.getColor());
+                existingCar.setColor(StringUtils.firstLetter(newCar.getColor()));
 
                 log.info("Updating information...");
                 carsRepository.save(existingCar);
