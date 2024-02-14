@@ -195,13 +195,13 @@
                         </tr>
                     </tbody>
                 </table>
-                
-                <mat-paginator [pageSizeOptions]="[10]"
-                               showFirstLastButtons
-                               [pageIndex]="pageIndex"
-                               [length]="totalElements"
-                               (page)="loadCars($event)"
-                               aria-label="Select page of cars">
+                <mat-paginator class="custom-paginator"
+                [pageSizeOptions]="[10]"
+                showFirstLastButtons
+                [pageIndex]="pageIndex"
+                [length]="totalElements"
+                (page)="loadCars($event)"
+                aria-label="Select page of cars">
                 </mat-paginator>
             </div>
             

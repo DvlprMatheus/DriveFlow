@@ -87,9 +87,11 @@ export class ListComponent implements OnInit{
       this.totalElements = carPage.totalElements;
       this.cars = new MatTableDataSource<ICar>(this.listCars);
 
-      this.paginator.length = this.totalElements;
-      this.paginator.pageIndex = pageEvent.pageIndex;
-      this.paginator.pageSize = pageEvent.pageSize;
+      if (this.paginator) {
+        this.paginator.length = this.totalElements;
+        this.paginator.pageIndex = pageEvent.pageIndex;
+        this.paginator.pageSize = pageEvent.pageSize;
+      }
       });
     }
 
