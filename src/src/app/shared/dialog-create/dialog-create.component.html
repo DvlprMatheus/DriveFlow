@@ -1,0 +1,42 @@
+<div class="dialog-content">
+    <mat-dialog-content>
+        <header class="dialog-header">
+            <h1>Registro de Carros</h1>
+        </header>
+        <form class="dialog-form" [formGroup]="dialog">
+            <mat-form-field class="dialog-input">
+                <mat-label>Modelo</mat-label>
+                <input matInput placeholder="Ex. Ka" formControlName="model" required>
+                <mat-error *ngIf="dialog.get('model')?.hasError('required')">Modelo é obrigatório</mat-error>
+            </mat-form-field>
+        
+            <mat-form-field class="dialog-select">
+                <mat-label>Fabricante</mat-label>
+                <mat-select formControlName="manufacturer" required>
+                  <mat-option>--</mat-option>
+                  @for (manufacturer of manufacturers; track manufacturer) {
+                    <mat-option [value]="manufacturer.name">{{ manufacturer.name }}</mat-option>
+                  }
+                </mat-select>
+                <mat-error *ngIf="dialog.get('manufacturer')?.hasError('required')">Fabricante é obrigatório</mat-error>
+              </mat-form-field>
+        
+            <mat-form-field class="dialog-input">
+                <mat-label>Ano</mat-label>
+                <input matInput placeholder="Ex. 1997" formControlName="year" required>
+                <mat-error *ngIf="dialog.get('year')?.hasError('required')">Ano é obrigatório</mat-error>
+                <mat-error *ngIf="dialog.get('year')?.hasError('pattern')">Formato de ano inválido</mat-error>
+            </mat-form-field>
+        
+            <mat-form-field class="dialog-input">
+                <mat-label>Cor</mat-label>
+                <input matInput placeholder="Preto" formControlName="color" required>
+                <mat-error *ngIf="dialog.get('color')?.hasError('required')">Cor é obrigatório</mat-error>
+            </mat-form-field>
+        </form>
+    </mat-dialog-content>
+    <mat-dialog-actions class="dialog-buttons">
+        <button mat-raised-button color="primary" (click)="onSubmit()" [disabled]="dialog.invalid">Salvar</button>
+        <button mat-raised-button color="warn" matDialogClose>Cancelar</button>
+    </mat-dialog-actions>
+</div>
