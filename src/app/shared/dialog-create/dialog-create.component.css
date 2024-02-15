@@ -1,0 +1,5 @@
+.dialog-buttons {
+    display: flex;
+    justify-content: end;
+    margin: 0 1em 5px 0;
+}
