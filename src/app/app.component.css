@@ -1,0 +1,11 @@
+.container-fluid {
+    padding: 64px 0 2px 0;
+    min-height: 100vh;
+}
+
+app-header{
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 10;
+}

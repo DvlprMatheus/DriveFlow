@@ -1,0 +1,9 @@
+<mat-toolbar>
+    <img src="/assets/images/logo-black.png" alt="logotipo" *ngIf="verifybtn == false" routerLink="">
+    <img src="/assets/images/logo-black.png" alt="logotipo" *ngIf="verifybtn == true" routerLink="/list">
+    <span class="example-spacer"></span>
+    <button mat-button (click)="verifybtn ? logout() : login()">
+        <mat-icon>{{ verifybtn ? 'power_settings_new' : 'account_circle' }}</mat-icon>
+        {{ verifybtn ? 'Sair' : 'Login' }}
+    </button>
+</mat-toolbar>

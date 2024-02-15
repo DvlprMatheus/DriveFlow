@@ -1,0 +1,43 @@
+.list-header {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.list-filters {
+    display: flex;
+    margin-top: 2.5em;
+}
+
+/* Table */
+
+.empty-table {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5em 0;
+    text-align: center;
+    font-size: 16px;
+    color: #888;
+}
+
+.table-input {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.table {
+    margin-top: 1em;
+}
+
+@media screen and (max-width: 360px) {
+    .empty-table {
+        padding: 3em 0;
+    }
+
+    mat-card-subtitle {
+        width: 85%;
+        text-align: justify;
+    }
+}

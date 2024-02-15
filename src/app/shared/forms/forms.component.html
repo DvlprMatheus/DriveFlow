@@ -1,0 +1,41 @@
+<mat-card-content class="forms-align">
+    <form class="default-forms" [formGroup]="form">
+      
+          <mat-form-field class="forms-input">
+            <mat-label>Modelo</mat-label>
+            <input matInput placeholder="Ex. Corsa" formControlName="model" required>
+            <mat-error *ngIf="form.get('model')?.hasError('required')">Modelo é obrigatório</mat-error>
+          </mat-form-field>
+
+          <mat-form-field class="forms-input">
+            <mat-label>Ano</mat-label>
+            <input matInput placeholder="Ex. 2015" formControlName="year" required>
+            <mat-error *ngIf="form.get('year')?.hasError('required')">Ano é obrigatório</mat-error>
+            <mat-error *ngIf="form.get('year')?.hasError('pattern') && !form.get('year')?.hasError('required')">Formato de ano inválido</mat-error>
+            <mat-error *ngIf="form.get('year')?.hasError('max') && !form.get('year')?.hasError('required') && !form.get('year')?.hasError('pattern')">O ano máximo é {{ currentYear }}</mat-error>
+          </mat-form-field>
+
+          <mat-form-field class="forms-input">
+            <mat-label>Cor</mat-label>
+            <input matInput placeholder="Ex. Prata" formControlName="color" required>
+            <mat-error *ngIf="form.get('color')?.hasError('required')">Cor é obrigatório</mat-error>
+          </mat-form-field>
+
+          <mat-form-field class="forms-select">
+            <mat-label>Fabricante</mat-label>
+            <mat-select formControlName="manufacturer" required>
+              <mat-option>--</mat-option>
+              @for (manufacturer of manufacturers; track manufacturer) {
+                <mat-option [value]="manufacturer.name">{{ manufacturer.name }}</mat-option>
+              }
+            </mat-select>
+            <mat-error *ngIf="form.get('manufacturer')?.hasError('required')">Fabricante é obrigatório</mat-error>
+          </mat-form-field>
+
+      </form>
+
+      <mat-card-actions class="forms-buttons">
+        <button mat-raised-button color="primary" (click)="submit()" [disabled]="form.invalid">{{ btnTxt }}</button>
+        <button mat-raised-button color="warn" (click)="onCancel()">Voltar</button>
+      </mat-card-actions>
+</mat-card-content>
